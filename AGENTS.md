@@ -33,5 +33,8 @@ never the `local/oh-my-pi/` prefix.
 
 - **Example-driven.** Keep prose tight; "interactive" means runnable/clickable demos
   where they aid understanding, not decoration.
-- **Site stack: undecided.** SSG/framework is chosen at bootstrap; record the
-  decision here once made.
+- **Site stack: vanilla, no build.** Plain HTML/CSS/JS (ES modules) served directly
+  by GitHub Pages — no SSG, no framework, no build step. Interactive demos are vanilla JS.
+- **Typed via JSDoc.** Type JS with JSDoc annotations and check with `tsc --noEmit`
+  (checkJs). No `.ts` or transpile — the `.js` ships as-is; tsc only validates, so
+  "no build" still holds.
