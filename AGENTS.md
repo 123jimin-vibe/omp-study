@@ -28,6 +28,9 @@ never the `local/oh-my-pi/` prefix.
    repo-relative paths only.
 2. **Public-facing.** Repo is public; keep all committed content professional and
    citation-grounded.
+3. **Internationalization-ready.** Site content and UI must be localizable without
+   structural rewrites. Expected locales are English (`en`), Korean (`ko`), and
+   Japanese (`ja`).
 
 ## Working conventions
 
