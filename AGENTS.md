@@ -30,7 +30,7 @@ never the `local/oh-my-pi/` prefix.
    citation-grounded.
 3. **Internationalization-ready.** Site content and UI must be localizable without
    structural rewrites. Expected locales are English (`en`), Korean (`ko`), and
-   Japanese (`ja`).
+   Japanese (`ja`). For now, use Korean as the main delivery language.
 
 ## Working conventions
 
