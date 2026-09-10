@@ -9,6 +9,10 @@ Repo: <https://github.com/123jimin-vibe/omp-study>
 
 Durable product behavior is governed by the worklog specifications.
 
+## Tracking mistakes
+
+- When you make a repository-work mistake, append a concise entry to `worklog/note/n0001-mostakes.md`. Exclude tool-use mistakes.
+
 ## Local study material
 
 **omp** (oh-my-pi), an open-source coding agent, is the main study material.
