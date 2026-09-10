@@ -1,2 +1,3 @@
 # Local-only reference checkouts (e.g. the oh-my-pi clone); never committed.
 /local/
+node_modules/
