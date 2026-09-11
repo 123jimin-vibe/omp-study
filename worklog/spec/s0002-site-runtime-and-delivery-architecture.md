@@ -3,7 +3,7 @@ id = "s0002"
 title = "Site Runtime and Delivery Architecture"
 +++
 
-# Site Runtime and Delivery Architecture (UNIMPLEMENTED)
+# Site Runtime and Delivery Architecture
 
 ## Delivery target
 
