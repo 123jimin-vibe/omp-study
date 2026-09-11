@@ -5,7 +5,7 @@ title = "Mistakes"
 
 # Mistakes
 
-Record mistakes made while working on this repository. Be concise.
+Record mistakes made while working on this repository, that were pointed out by the user. Be concise.
 Similar mistakes from one session may be merged.
 
 Exclude tool-use mistakes.

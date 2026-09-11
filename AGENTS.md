@@ -11,7 +11,7 @@ Durable product behavior is governed by the worklog specifications.
 
 ## Tracking mistakes
 
-- When you make a repository-work mistake, append a concise entry to `worklog/note/n0001-mostakes.md`. Exclude tool-use mistakes.
+- Whenever the user has pointed out a mistake you committed, append an entry to `worklog/note/n0001-mistakes.md`. Tool use mistakes are exceptions.
 
 ## Local study material
 
