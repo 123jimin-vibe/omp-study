@@ -7,9 +7,7 @@
 agent_mode = "propose"
 
 [task]
-# Unapproved agent-authored content MUST be marked NEEDS APPROVAL.
-agent_mode = "draft"
+agent_mode = "autonomous"
 
 [note]
-# Unapproved agent-authored content MUST be marked NEEDS APPROVAL.
-agent_mode = "draft"
+agent_mode = "autonomous"
