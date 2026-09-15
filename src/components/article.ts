@@ -1,11 +1,15 @@
-import { el, icon } from './dom.js';
+import type {
+  ArticleLabels,
+  CodeBlock,
+  ContentSection,
+  DemoRegistry,
+  MountedDemo,
+  MountedView,
+} from '../content.ts';
+import { el, icon } from './dom.ts';
+import { highlightCode } from './syntax.ts';
 
-/**
- * @param {import('../content.js').CodeBlock} block
- * @param {import('../content.js').ArticleLabels} labels
- * @returns {import('../content.js').MountedView}
- */
-export function renderCodeBlock(block, labels) {
+export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): MountedView {
   const element = el('figure', 'article-code');
   const header = el('figcaption', 'article-code-header');
   const caption = el('span', 'article-code-caption', block.caption);
@@ -17,7 +21,8 @@ export function renderCodeBlock(block, labels) {
   header.append(caption, language, copy);
 
   const pre = el('pre', 'article-code-pre');
-  const code = el('code', 'article-code-source', block.code);
+  const code = el('code', 'article-code-source');
+  highlightCode(code, block.code, block.language);
   pre.tabIndex = 0;
   pre.dir = 'ltr';
   pre.setAttribute('aria-label', `${labels.codeExample} — ${block.caption}`);
@@ -30,8 +35,7 @@ export function renderCodeBlock(block, labels) {
   element.append(header, pre, status);
 
   let disposed = false;
-  /** @type {number | undefined} */
-  let resetTimer;
+  let resetTimer: number | undefined;
   const events = new AbortController();
 
   async function copyCode() {
@@ -79,16 +83,15 @@ export function renderCodeBlock(block, labels) {
   };
 }
 
-/**
- * @param {import('../content.js').ContentSection[]} sections
- * @param {import('../content.js').ArticleLabels} labels
- * @param {import('../content.js').DemoRegistry} demos
- * @returns {import('../content.js').MountedView}
- */
-export function renderArticle(sections, labels, demos) {
+export function renderArticle(
+  sections: readonly ContentSection[],
+  labels: ArticleLabels,
+  demos: DemoRegistry,
+): MountedView {
   const element = el('article', 'topic-article');
-  /** @type {import('../content.js').MountedView[]} */
-  const children = [];
+  const children: MountedView[] = [];
+  const printDemos: { demo: MountedDemo; holder: HTMLElement }[] = [];
+  const events = new AbortController();
 
   for (const data of sections) {
     const section = el('section', 'article-section');
@@ -120,19 +123,42 @@ export function renderArticle(sections, labels, demos) {
         case 'demo': {
           const child = demos[block.demo]();
           children.push(child);
-          section.append(child.element);
+          child.element.classList.add('demo-screen');
+          const holder = el('div', 'demo-print');
+          printDemos.push({ demo: child, holder });
+          section.append(child.element, holder);
           break;
+        }
+        default: {
+          const unexpected: never = block;
+          throw new Error(`Unsupported content block: ${unexpected}`);
         }
       }
     }
     element.append(section);
   }
 
+  function renderPrint(): void {
+    for (const { demo, holder } of printDemos) {
+      holder.replaceChildren(demo.renderPrint());
+    }
+  }
+
+  function clearPrint(): void {
+    for (const { holder } of printDemos) holder.replaceChildren();
+  }
+
+  window.addEventListener('beforeprint', renderPrint, { signal: events.signal });
+  window.addEventListener('afterprint', clearPrint, { signal: events.signal });
+
   return {
     element,
     dispose() {
-      for (const child of children) child.dispose();
+      events.abort();
+      clearPrint();
+      for (const child of children) child.dispose?.();
       children.length = 0;
+      printDemos.length = 0;
     },
   };
 }

@@ -1,0 +1,278 @@
+/* Reference presentation viewport: 1920 × 1200. Keep all overrides screen-only. */
+@media screen {
+  html[data-presentation] {
+    --gutter: clamp(24px, 5vw, 72px);
+    overflow-y: auto;
+    scroll-behavior: auto;
+  }
+
+  html[data-presentation] .site-header {
+    display: none;
+  }
+
+  html[data-presentation] .site-footer,
+  html[data-presentation] .topic-page > .topic-back,
+  html[data-presentation] .topic-index {
+    display: none;
+  }
+
+
+  html[data-presentation] .topic-page {
+    width: min(65rem, calc(100% - var(--gutter) * 2));
+    padding-block: clamp(1.5rem, 4vw, 3rem) 6rem;
+  }
+
+  html[data-presentation] .topic-page .topic-header {
+    max-width: none;
+    padding-block: 0 clamp(2rem, 3vw, 3rem);
+  }
+
+  html[data-presentation] .topic-page .topic-meta {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  html[data-presentation] .topic-page .topic-number,
+  html[data-presentation] .topic-page .badge {
+    font-size: clamp(0.8125rem, 1vw, 1rem);
+  }
+
+  html[data-presentation] .topic-page .topic-title {
+    font-size: clamp(2.25rem, 3.4vw, 4rem);
+    line-height: 1.2;
+  }
+
+  html[data-presentation] .topic-page .topic-description {
+    max-width: none;
+    margin-top: 1.25rem;
+    font-size: clamp(1.0625rem, 1.25vw, 1.375rem);
+    line-height: 1.75;
+  }
+
+  html[data-presentation] .topic-page .topic-layout {
+    display: block;
+    padding-top: clamp(2rem, 3vw, 3rem);
+  }
+
+  html[data-presentation] .topic-page .topic-article {
+    font-size: clamp(1.125rem, 1.25vw, 1.5rem);
+    line-height: 1.75;
+  }
+
+  html[data-presentation] .topic-page .article-section,
+  html[data-presentation] .topic-page .article-heading {
+    scroll-margin-top: 1.5rem;
+  }
+
+  html[data-presentation] .topic-page .article-section + .article-section {
+    margin-top: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  html[data-presentation] .topic-page .article-heading {
+    margin-bottom: 1rem;
+    font-size: clamp(1.375rem, 1.75vw, 2rem);
+    line-height: 1.45;
+  }
+
+  html[data-presentation] .topic-page .article-paragraph {
+    margin-bottom: 1.5em;
+  }
+
+  html[data-presentation] .topic-page .article-note {
+    padding: clamp(1rem, 1.25vw, 1.5rem);
+    font-size: clamp(1rem, 1.05vw, 1.25rem);
+  }
+
+  html[data-presentation] .topic-page .article-code-header {
+    padding: clamp(0.75rem, 1vw, 1rem);
+    font-size: clamp(0.875rem, 1vw, 1.125rem);
+  }
+
+  html[data-presentation] .topic-page .article-code-language {
+    font-size: clamp(0.8125rem, 0.9vw, 1rem);
+  }
+
+  html[data-presentation] .topic-page .article-code-pre {
+    padding: clamp(1rem, 1.25vw, 1.5rem);
+    font-size: clamp(0.875rem, 1vw, 1.125rem);
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  html[data-presentation] .topic-page .article-code-source {
+    white-space: inherit;
+  }
+
+  html[data-presentation] .sample-flow {
+    padding: clamp(1rem, 1.75vw, 2rem);
+  }
+
+  html[data-presentation] .sample-flow__title {
+    font-size: clamp(1rem, 1.25vw, 1.5rem);
+  }
+
+  html[data-presentation] .sample-flow__description,
+  html[data-presentation] .sample-flow__progress,
+  html[data-presentation] .sample-flow__status {
+    font-size: clamp(0.9375rem, 1vw, 1.1875rem);
+  }
+
+  html[data-presentation] .sample-flow__rail {
+    gap: clamp(0.5rem, 1.5vw, 1.5rem);
+    margin-block: 1.5rem;
+  }
+
+  html[data-presentation] .sample-flow__stage {
+    min-height: 0;
+    padding: clamp(0.75rem, 1vw, 1.25rem);
+  }
+
+  html[data-presentation] .sample-flow__marker {
+    width: clamp(2rem, 2vw, 2.5rem);
+    height: clamp(2rem, 2vw, 2.5rem);
+    font-size: clamp(0.875rem, 1vw, 1.125rem);
+  }
+
+  html[data-presentation] .sample-flow__marker .icon {
+    width: 1em;
+    height: 1em;
+  }
+
+  html[data-presentation] .sample-flow__stage-name {
+    font-size: clamp(0.9375rem, 1.05vw, 1.25rem);
+  }
+
+  html[data-presentation] .sample-flow__stage-complete {
+    font-size: clamp(0.8125rem, 0.9vw, 1rem);
+  }
+
+  html[data-presentation] .sample-flow__controls .button {
+    padding: 0.65rem 0.875rem;
+    font-size: clamp(0.875rem, 1vw, 1.125rem);
+  }
+
+  html[data-presentation] .topic-page .topic-end {
+    max-width: none;
+  }
+
+  html[data-presentation] .section-nav {
+    position: fixed;
+    z-index: 4;
+    top: clamp(9rem, 22vh, 16rem);
+    left: max(24px, calc(50% - 840px));
+    display: grid;
+    grid-template-areas: "heading" "current" "track" "actions";
+    width: clamp(9rem, 10vw, 11.5rem);
+    gap: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  html[data-presentation] .section-nav-heading {
+    grid-area: heading;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  html[data-presentation] .section-nav-counter {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  html[data-presentation] .section-nav-current {
+    grid-area: current;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 550;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  html[data-presentation] .section-nav-track {
+    grid-area: track;
+    height: 2px;
+    background: var(--line);
+  }
+
+  html[data-presentation] .section-nav-progress {
+    display: block;
+    width: var(--section-progress);
+    height: 100%;
+    background: var(--accent);
+  }
+
+  html[data-presentation] .section-nav-actions {
+    grid-area: actions;
+    display: flex;
+    gap: 4px;
+  }
+
+  html[data-presentation] .section-nav-step {
+    display: inline-grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink);
+  }
+
+  html[data-presentation] .section-nav-step .icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  html[data-presentation] .section-nav-step[aria-disabled] {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  html[data-presentation] .section-nav-step:not([aria-disabled]):hover,
+  html[data-presentation] .section-nav-current:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 1399px) {
+    html[data-presentation] .section-nav {
+      top: auto;
+      right: 16px;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      left: 16px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "heading actions" "current actions";
+      align-items: center;
+      width: auto;
+      max-width: 30rem;
+      margin-inline: auto;
+      padding: 8px 12px;
+      gap: 2px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    html[data-presentation] .section-nav-current {
+      font-size: 13px;
+    }
+
+    html[data-presentation] .section-nav-track {
+      display: none;
+    }
+  }
+
+
+  html[data-presentation]::view-transition-group(*),
+  html[data-presentation]::view-transition-old(*),
+  html[data-presentation]::view-transition-new(*) {
+    animation: none !important;
+  }
+}

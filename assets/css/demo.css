@@ -11,6 +11,7 @@
 .sample-flow__header {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
 }
@@ -24,6 +25,7 @@
   font-size: 1rem;
   font-weight: 650;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .sample-flow__description {
@@ -163,7 +165,7 @@
 .sample-flow__next:not(:disabled) {
   border-color: var(--accent);
   background: var(--accent);
-  color: var(--surface);
+  color: var(--on-accent);
 }
 
 @media (max-width: 760px) {
@@ -185,4 +187,35 @@
   .sample-flow__rail {
     gap: 0.4rem;
   }
+}
+
+@media (max-width: 380px) {
+  .sample-flow__rail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .sample-flow__stage {
+    min-height: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .sample-flow__stage-name,
+  .sample-flow__stage-complete {
+    margin-top: 0;
+  }
+
+  .sample-flow__stage-name {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media screen {
+  .demo-print { display: none; }
 }

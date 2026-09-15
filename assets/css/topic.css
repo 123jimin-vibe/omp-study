@@ -119,6 +119,11 @@
   text-decoration: underline;
 }
 
+.topic-page .topic-index-link[aria-current="location"] {
+  color: var(--accent);
+  font-weight: 650;
+}
+
 .topic-page .article-section {
   scroll-margin-top: 6rem;
 }
@@ -243,6 +248,8 @@
   border-top: 1px solid var(--line);
 }
 
+.section-nav { display: none; }
+
 @media (max-width: 760px) {
   .topic-page {
     padding-block: 1.5rem 3.5rem;
@@ -271,6 +278,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem 1.5rem;
+  }
+
+  .topic-page .topic-index-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   .topic-page .topic-article {

@@ -1,9 +1,11 @@
-import { el, icon } from '../components/dom.js';
-import { createBlueprint } from '../components/blueprint.js';
+import type { Locale, MountedView } from '../content.ts';
+import { el, icon } from '../components/dom.ts';
+import { createTitleTypography } from '../components/typography.ts';
 
-/** @param {import('../content.js').Locale} locale */
-export function renderTitle(locale) {
+export function renderTitle(locale: Locale, { enter = true } = {}): MountedView {
   const page = el('div', 'title-page page-width');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (enter && !reducedMotion.matches) page.dataset.enter = '';
   const hero = el('section', 'hero');
   hero.setAttribute('aria-labelledby', 'site-title');
 
@@ -17,14 +19,8 @@ export function renderTitle(locale) {
   browse.href = '#/?section=contents';
   browse.append(el('span', '', locale.home.browse), icon('down'));
   copy.append(eyebrow, heading, browse);
-
-  const visual = el('div', 'hero-visual');
-  visual.setAttribute('aria-hidden', 'true');
-  visual.append(createBlueprint());
-  const coordinates = el('div', 'figure-coordinates');
-  coordinates.append(el('span', '', locale.home.figure), el('span', '', locale.home.projection));
-  visual.append(coordinates);
-  hero.append(copy, visual);
+  hero.append(copy);
+  const typography = reducedMotion.matches ? null : createTitleTypography(heading, hero, { typing: enter });
 
   const contents = el('section', 'contents');
   contents.setAttribute('aria-labelledby', 'contents');
@@ -54,5 +50,39 @@ export function renderTitle(locale) {
   }
   contents.append(contentsHeader, list);
   page.append(hero, contents);
-  return { element: page, dispose() {} };
+
+  const events = new AbortController();
+  let copyVisible = false;
+  function syncMotion(): void {
+    copy.style.setProperty('--title-motion', copyVisible && !document.hidden ? 'running' : 'paused');
+  }
+  const intersection = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.target === copy) copyVisible = entry.isIntersecting;
+    }
+    syncMotion();
+  });
+  intersection.observe(copy);
+  document.addEventListener('visibilitychange', syncMotion, { signal: events.signal });
+
+  function finishEntrance(event: AnimationEvent): void {
+    if (event.animationName === 'hero-reveal' && (event.type === 'animationcancel' || event.target === browse)) {
+      delete page.dataset.enter;
+    }
+  }
+  copy.addEventListener('animationend', finishEntrance, { signal: events.signal });
+  copy.addEventListener('animationcancel', finishEntrance, { signal: events.signal });
+  return {
+    element: page,
+    dispose() {
+      intersection.disconnect();
+      events.abort();
+      for (const animation of page.getAnimations({ subtree: true })) {
+        if (animation instanceof CSSAnimation && animation.animationName === 'hero-reveal') {
+          animation.cancel();
+        }
+      }
+      typography?.dispose();
+    },
+  };
 }

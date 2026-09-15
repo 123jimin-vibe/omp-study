@@ -1,5 +1,6 @@
-/** @type {import('../../js/content.js').DemoLabels} */
-export const demo = {
+import type { DemoLabels } from '../../content.ts';
+
+export const demo: DemoLabels = {
   title: '데모 예시',
   description: '임시 슬롯으로 구성한 상호작용 예시입니다.',
   next: '다음 단계',
@@ -13,4 +14,6 @@ export const demo = {
   ],
   step: '진행 단계',
   complete: '완료',
+  current: '현재 단계',
+  pending: '대기',
 };

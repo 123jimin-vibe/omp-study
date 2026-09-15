@@ -1,5 +1,6 @@
-/** @type {import('../../js/content.js').Topic} */
-export const topic = {
+import type { ArticleLabels, Topic } from '../../content.ts';
+
+export const topic: Topic = {
   id: 'sample',
   number: '00',
   title: '예시 문서',
@@ -46,10 +47,13 @@ export const topic = {
   ],
 };
 
-/** @type {import('../../js/content.js').ArticleLabels} */
-export const article = {
+export const article: ArticleLabels = {
   back: '목차',
   onThisPage: '이 페이지에서',
+  sectionNavigation: '섹션 탐색',
+  currentSection: '현재 섹션',
+  previousSection: '이전 섹션',
+  nextSection: '다음 섹션',
   placeholder: '임시 페이지',
   copy: '코드 복사',
   copied: '복사했습니다',

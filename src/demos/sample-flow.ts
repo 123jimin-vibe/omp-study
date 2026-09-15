@@ -1,10 +1,7 @@
-import { el, icon } from '../components/dom.js';
+import type { DemoLabels, MountedDemo } from '../content.ts';
+import { el, icon } from '../components/dom.ts';
 
-/**
- * @param {import('../content.js').DemoLabels} labels
- * @returns {import('../content.js').MountedView}
- */
-export function createSampleFlow(labels) {
+export function createSampleFlow(labels: DemoLabels): MountedDemo {
   const element = el('section', 'sample-flow');
   element.setAttribute('aria-label', labels.title);
 
@@ -57,8 +54,7 @@ export function createSampleFlow(labels) {
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let completed = 0;
-  /** @type {Animation | null} */
-  let motion = null;
+  let motion: Animation | null = null;
 
   function cancelMotion() {
     motion?.cancel();
@@ -68,7 +64,7 @@ export function createSampleFlow(labels) {
   function renderState() {
     progress.textContent = `${completed} / ${stages.length}`;
     progress.setAttribute('aria-valuenow', String(completed));
-    status.textContent = labels.states[completed];
+    status.textContent = labels.states[completed]!;
     next.disabled = completed === stages.length;
     reset.disabled = completed === 0;
     stages.forEach(({ item, complete }, index) => {
@@ -83,7 +79,7 @@ export function createSampleFlow(labels) {
   function advance() {
     if (completed === stages.length) return;
     cancelMotion();
-    const stage = stages[completed];
+    const stage = stages[completed]!;
     completed += 1;
     renderState();
     if (!reducedMotion.matches) {
@@ -103,6 +99,36 @@ export function createSampleFlow(labels) {
     renderState();
   }
 
+  function renderPrint(): HTMLElement {
+    const snapshot = el('section', 'sample-flow-print');
+    snapshot.setAttribute('aria-label', labels.title);
+    snapshot.append(
+      el('h3', 'sample-flow-print-title', labels.title),
+      el('p', 'sample-flow-print-description', labels.description),
+      el(
+        'p',
+        'sample-flow-print-progress',
+        `${labels.step}: ${completed} / ${stages.length}`,
+      ),
+    );
+
+    const list = el('ol', 'sample-flow-print-stages');
+    list.setAttribute('aria-label', labels.step);
+    labels.stages.forEach((label, index) => {
+      const item = el('li', 'sample-flow-print-stage');
+      const state = index < completed ? 'complete' : index === completed ? 'current' : 'pending';
+      item.dataset.state = state;
+      item.append(
+        el('span', 'sample-flow-print-number', String(index + 1).padStart(2, '0')),
+        el('span', 'sample-flow-print-label', label),
+        el('span', 'sample-flow-print-state', labels[state]),
+      );
+      list.append(item);
+    });
+    snapshot.append(list);
+    return snapshot;
+  }
+
   function motionPreferenceChanged() {
     if (reducedMotion.matches) cancelMotion();
   }
@@ -114,6 +140,7 @@ export function createSampleFlow(labels) {
 
   return {
     element,
+    renderPrint,
     dispose() {
       cancelMotion();
       next.removeEventListener('click', advance);

@@ -1,13 +1,9 @@
-import { renderArticle } from '../components/article.js';
-import { el, icon } from '../components/dom.js';
+import type { ArticleLabels, DemoRegistry, MountedView, Topic } from '../content.ts';
+import { renderArticle } from '../components/article.ts';
+import { createSectionNavigation } from '../components/section-navigation.ts';
+import { el, icon } from '../components/dom.ts';
 
-/**
- * @param {import('../content.js').Topic} topic
- * @param {import('../content.js').ArticleLabels} labels
- * @param {import('../content.js').DemoRegistry} demos
- * @returns {import('../content.js').MountedView}
- */
-export function renderTopic(topic, labels, demos) {
+export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegistry): MountedView {
   const element = el('div', 'topic-page page-width');
   const back = el('a', 'topic-back', labels.back);
   back.href = '#/?section=contents';
@@ -30,11 +26,13 @@ export function renderTopic(topic, labels, demos) {
   index.setAttribute('aria-label', labels.onThisPage);
   const indexTitle = el('p', 'topic-index-title', labels.onThisPage);
   const links = el('ul', 'topic-index-list');
+  const indexLinks: HTMLAnchorElement[] = [];
   for (const section of topic.sections) {
     const item = el('li');
     const link = el('a', 'topic-index-link', section.title);
     link.href = `#/topic/${encodeURIComponent(topic.id)}?section=${encodeURIComponent(section.id)}`;
     item.append(link);
+    indexLinks.push(link);
     links.append(item);
   }
   index.append(indexTitle, links);
@@ -49,5 +47,13 @@ export function renderTopic(topic, labels, demos) {
   footer.append(end);
 
   element.append(back, header, layout, footer);
-  return { element, dispose: article.dispose };
+  const sectionNavigation = createSectionNavigation(topic, labels, element, indexLinks);
+  element.append(sectionNavigation.element);
+  return {
+    element,
+    dispose() {
+      sectionNavigation.dispose?.();
+      article.dispose?.();
+    },
+  };
 }
