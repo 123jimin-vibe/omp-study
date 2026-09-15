@@ -5,7 +5,7 @@ modifies = ["s0005"]
 status = "done"
 +++
 
-# Direct interaction and visibly particulate title (NEEDS APPROVAL)
+# Direct interaction and visibly particulate title
 
 ## User requirements
 

@@ -14,7 +14,7 @@ title = "Visual Delivery and Reading Modes"
 ### Ambient visuals and motion
 
 - The title artwork MUST be generative typography of the site title itself, set in an aesthetically regarded sans-serif Korean typeface, with dynamic, visually impressive animation. When visual and technical ambitions conflict, visual quality takes priority. Rotating a three-dimensional model, a featureless luminous blob within a frame, or a deforming abstract surface are insufficient.
-- The hero title MUST NOT be text-selectable. NEEDS APPROVAL: the title remains real, accessible heading text, and the artwork degrades to the plain heading without WebGL, under reduced motion, and in print.
+- The hero title MUST NOT be text-selectable. The title remains real, accessible heading text, and the artwork degrades to the plain heading without WebGL, under reduced motion, and in print.
 - The title and topic pages MUST have a subtle, technically non-trivial ambient background rather than a conventional floating-node network.
 - During ordinary browsing, the background MUST be discernible and gently animated without distracting from reading. Contour-line fields and other fine, moving patterns behind text MUST NOT be used.
 - Ambient visuals MUST remain subordinate to text and controls, adapt to both color modes and mobile layouts, and remain independently replaceable.
