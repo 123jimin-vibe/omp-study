@@ -5,9 +5,10 @@
   --ambient-opacity: 0.32;
   --ambient-mask: linear-gradient(
     90deg,
-    rgb(0 0 0 / 0.025) 0%,
-    rgb(0 0 0 / 0.035) 32%,
-    rgb(0 0 0 / 0.16) 53%,
+    rgb(0 0 0 / 0.6) 0%,
+    rgb(0 0 0 / 0.07) 18%,
+    rgb(0 0 0 / 0.035) 42%,
+    rgb(0 0 0 / 0.18) 58%,
     rgb(0 0 0 / 0.7) 76%,
     #000 100%
   );
@@ -33,7 +34,7 @@ html[data-theme="dark"] .ambient-field {
   --ambient-opacity: 0.44;
   --ambient-mask: linear-gradient(
     90deg,
-    rgb(0 0 0 / 0.06),
+    rgb(0 0 0 / 0.4),
     rgb(0 0 0 / 0.025) 18%,
     rgb(0 0 0 / 0.035) 52%,
     rgb(0 0 0 / 0.4) 74%,
@@ -60,8 +61,9 @@ html[data-theme="dark"] .ambient-field[data-view="reading"] {
     --ambient-opacity: 0.22;
     --ambient-mask: linear-gradient(
       90deg,
-      rgb(0 0 0 / 0.025),
-      rgb(0 0 0 / 0.08) 52%,
+      rgb(0 0 0 / 0.15),
+      rgb(0 0 0 / 0.035) 25%,
+      rgb(0 0 0 / 0.06) 60%,
       rgb(0 0 0 / 0.55) 85%,
       rgb(0 0 0 / 0.85)
     );
