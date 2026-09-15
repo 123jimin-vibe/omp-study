@@ -3,6 +3,46 @@ import { renderArticle } from '../components/article.ts';
 import { createSectionNavigation } from '../components/section-navigation.ts';
 import { el, icon } from '../components/dom.ts';
 
+function fitTopicTitle(title: HTMLHeadingElement, header: HTMLElement): () => void {
+  const events = new AbortController();
+  let disposed = false;
+  let fittedWidth = 0;
+
+  function fit() {
+    if (disposed || !title.isConnected) return;
+    fittedWidth = header.getBoundingClientRect().width;
+    if (!fittedWidth) return;
+    title.classList.remove('topic-title-fitted');
+    const width = title.getBoundingClientRect().width;
+    if (width <= fittedWidth) return;
+    const size = parseFloat(getComputedStyle(title).fontSize);
+    title.style.setProperty('--topic-title-size', `${size * (fittedWidth - 0.5) / width}px`);
+    title.classList.add('topic-title-fitted');
+  }
+
+  const resize = new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width !== fittedWidth) fit();
+  });
+  resize.observe(header);
+  const presentation = new MutationObserver(fit);
+  presentation.observe(document.documentElement, {
+    attributes: true, attributeFilter: ['data-presentation'],
+  });
+  window.addEventListener('resize', fit, { signal: events.signal });
+  window.addEventListener('afterprint', fit, { signal: events.signal });
+  document.fonts.addEventListener('loadingdone', fit, { signal: events.signal });
+  void document.fonts.ready.then(fit);
+  // The view is mounted synchronously; fit before its first paint or transition snapshot.
+  queueMicrotask(fit);
+
+  return () => {
+    disposed = true;
+    events.abort();
+    resize.disconnect();
+    presentation.disconnect();
+  };
+}
+
 export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegistry): MountedView {
   const element = el('div', 'topic-page page-width');
   const back = el('a', 'topic-back', labels.back);
@@ -11,15 +51,16 @@ export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegi
 
   const header = el('header', 'topic-header');
   const meta = el('div', 'topic-meta');
-  meta.append(
-    el('span', 'topic-number', topic.number),
-    el('span', 'badge', labels.placeholder),
-  );
+  meta.append(el('span', 'topic-number', topic.number));
   const title = el('h1', 'topic-title', topic.title);
   title.tabIndex = -1;
+  title.dataset.topicTitle = topic.id;
   title.style.viewTransitionName = CSS.escape(`topic-${topic.id}`);
-  const description = el('p', 'topic-description', topic.description);
-  header.append(meta, title, description);
+  header.append(meta, title);
+  if (topic.description) header.append(el('p', 'topic-description', topic.description));
+  element.append(back, header);
+  const disposeTitle = fitTopicTitle(title, header);
+  if (!topic.sections.length) return { element, dispose: disposeTitle };
 
   const layout = el('div', 'topic-layout');
   const index = el('nav', 'topic-index');
@@ -46,12 +87,13 @@ export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegi
   end.prepend(icon('left'));
   footer.append(end);
 
-  element.append(back, header, layout, footer);
+  element.append(layout, footer);
   const sectionNavigation = createSectionNavigation(topic, labels, element, indexLinks);
   element.append(sectionNavigation.element);
   return {
     element,
     dispose() {
+      disposeTitle();
       sectionNavigation.dispose?.();
       article.dispose?.();
     },

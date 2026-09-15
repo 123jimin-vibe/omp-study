@@ -50,7 +50,7 @@ h1, h2, h3, p { margin: 0; }
 
 #site { position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: 100svh; }
 .page-width { width: min(1280px, calc(100% - var(--gutter) * 2)); margin-inline: auto; }
-.site-main { flex: 1; min-width: 0; container-type: inline-size; view-transition-name: page-content; }
+.site-main { flex: 1; min-width: 0; container-type: inline-size; }
 .icon { width: 20px; height: 20px; flex: 0 0 auto; }
 .sr-only {
   position: absolute;
@@ -94,7 +94,6 @@ h1, h2, h3, p { margin: 0; }
 .nav-link[aria-current="page"]::before { content: ""; width: 5px; height: 5px; margin-right: 4px; border-radius: 50%; background: var(--accent); }
 .locale-tag { padding-left: 22px; border-left: 1px solid var(--line); color: var(--muted); font: 11px var(--font-mono); letter-spacing: 0.06em; }
 .eyebrow { color: var(--muted); font-family: var(--font-mono); font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.12em; }
-.badge { display: inline-flex; align-items: center; width: fit-content; padding: 5px 9px; border: 1px solid var(--line); color: var(--muted); font-size: 11px; font-weight: 500; line-height: 1.4; white-space: nowrap; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 15px; border: 1px solid var(--line); border-radius: 3px; background: transparent; font-size: 13px; font-weight: 550; }
 .button:hover:not(:disabled) { border-color: var(--ink); }
 .button:disabled { color: var(--muted); }
@@ -116,11 +115,10 @@ h1, h2, h3, p { margin: 0; }
 .not-found p { margin-bottom: 32px; color: var(--muted); line-height: 1.8; }
 
 ::view-transition-group(*) { animation-duration: 320ms; animation-timing-function: cubic-bezier(0.22, 0.68, 0, 1); }
+/* Root snapshots preserve the viewport when navigation changes the document scroll position. */
 ::view-transition-group(root) { animation: none; }
-::view-transition-old(root) { animation: none; opacity: 0; }
-::view-transition-new(root) { animation: none; }
-::view-transition-old(page-content) { animation: page-out 120ms ease-out both; }
-::view-transition-new(page-content) { animation: page-in 220ms ease-out both; }
+::view-transition-old(root) { animation: page-out 120ms ease-out both; }
+::view-transition-new(root) { animation: page-in 220ms ease-out both; }
 ::view-transition-group(site-header) { animation: none; }
 ::view-transition-old(site-header) { animation: none; opacity: 0; }
 ::view-transition-new(site-header) { animation: none; }

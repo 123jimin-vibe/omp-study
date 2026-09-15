@@ -6,7 +6,6 @@ import { createAmbient } from './components/ambient.ts';
 import { loadLocale } from './i18n.ts';
 import { renderTitle } from './views/title.ts';
 import { renderTopic } from './views/topic.ts';
-import { createSampleFlow } from './demos/sample-flow.ts';
 import brandMark from '../assets/favicon.svg';
 
 type Route = { href: string; section: string | null } & (
@@ -55,9 +54,12 @@ skip.addEventListener('click', (event) => {
   main.focus();
 });
 
-const demos: DemoRegistry = { 'sample-flow': () => createSampleFlow(locale.demo) };
+const demos: DemoRegistry = {};
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const scrollPositions = new Map<string, number>();
+const contentsPositions = new Map<string, number>();
+const expandedGroups = new Set<string>();
+if (locale.topicGroups[0]) expandedGroups.add(locale.topicGroups[0].id);
 let currentRoute: Route | null = null;
 let mounted: MountedView | null = null;
 let generation = 0;
@@ -84,6 +86,32 @@ function renderMissing(): MountedView {
   return { element: page };
 }
 
+function topicTitle(id: string): HTMLElement | null {
+  return main.querySelector<HTMLElement>(`[data-topic-title="${CSS.escape(id)}"]`);
+}
+
+function setTransitionTopic(id?: string): void {
+  for (const title of main.querySelectorAll<HTMLElement>('[data-topic-title]')) {
+    title.style.viewTransitionName = title.dataset.topicTitle === id && id !== undefined
+      ? CSS.escape(`topic-${id}`) : 'none';
+  }
+}
+
+function revealTitle(title: HTMLElement): void {
+  const bounds = title.getBoundingClientRect();
+  const margin = Math.min(48, window.innerHeight * 0.1);
+  if (bounds.top < margin || bounds.bottom > window.innerHeight - margin) {
+    window.scrollTo({
+      top: window.scrollY + bounds.top - Math.max(margin, (window.innerHeight - bounds.height) / 3),
+      behavior: 'instant',
+    });
+  }
+}
+
+function reportNavigationError(error: unknown): void {
+  console.error('Unable to display the requested page', error);
+}
+
 /**
  * Hash URLs work unchanged on GitHub Pages, including project subdirectories.
  * Same-page section changes preserve the mounted article and demonstration state.
@@ -93,27 +121,50 @@ async function showRoute(
   { restore = false, animate = true, focus = true } = {},
 ) {
   const request = ++generation;
-  const leavingPresentation = route.view !== 'topic' && (readingTools.presenting || readingTools.changing);
-  const restoredY = restore ? scrollPositions.get(route.href) : undefined;
-
-  // Let a superseded update finish before measuring a new shared-element transition.
   const previousTransition = activeTransition;
   if (previousTransition) {
     previousTransition.skipTransition();
-    await previousTransition.updateCallbackDone;
+    // The old overlay must be gone, not merely updated, before taking another snapshot.
+    // Its own navigation invocation reports any document-update failure.
+    await Promise.allSettled([previousTransition.finished]);
   }
   if (request !== generation) return;
+  const leavingPresentation = route.view !== 'topic' && (readingTools.presenting || readingTools.changing);
   if (leavingPresentation) await readingTools.exitPresentation();
   if (request !== generation) return;
+
+  const restoredY = restore ? scrollPositions.get(route.href) : undefined;
   if (currentRoute) scrollPositions.set(currentRoute.href, window.scrollY);
   const samePage = currentRoute?.href.split('?')[0] === route.href.split('?')[0];
+  const returningTopicId = currentRoute?.view === 'topic' && route.view === 'home'
+    && (route.section === 'contents' || (restore && !route.section))
+    ? currentRoute.topic.id : undefined;
+  const canAnimate = animate && !samePage && !leavingPresentation
+    && !readingTools.presenting && !readingTools.changing && !reducedMotion.matches
+    && typeof document.startViewTransition === 'function';
+  let transitionTopicId = canAnimate ? returningTopicId
+    ?? (currentRoute?.view === 'home' && route.view === 'topic' && !route.section ? route.topic.id : undefined)
+    : undefined;
 
+  if (transitionTopicId) {
+    const title = topicTitle(transitionTopicId);
+    // Settle an opening/closing disclosure before capturing a clicked or history-restored row.
+    title?.closest('details.contents-group')?.dispatchEvent(new Event('contents-reveal'));
+    if (title && title.getClientRects().length) revealTitle(title);
+    else transitionTopicId = undefined;
+  }
+  if (currentRoute?.view === 'home' && route.view === 'topic') {
+    contentsPositions.set(route.topic.id, window.scrollY);
+  }
+  setTransitionTopic(transitionTopicId);
   const commit = () => {
     if (request !== generation) return;
     ambient.setView(route.view === 'home' ? 'cover' : 'reading');
     if (!samePage || !mounted) {
       mounted?.dispose?.();
-      mounted = route.view === 'home' ? renderTitle(locale, { enter: currentRoute === null })
+      mounted = route.view === 'home' ? renderTitle(locale, {
+        enter: currentRoute === null, expandedGroups, revealTopicId: returningTopicId,
+      })
         : route.view === 'topic' ? renderTopic(route.topic, locale.article, demos)
           : renderMissing();
       main.replaceChildren(mounted.element);
@@ -128,28 +179,46 @@ async function showRoute(
     const target = section && main.contains(section) ? section : null;
     const heading = target?.matches('h1, h2, h3') ? target
       : target?.querySelector('h2, h3') ?? main.querySelector('h1');
-    if (restoredY !== undefined) window.scrollTo({ top: restoredY, behavior: 'instant' });
+    const returningTitle = returningTopicId ? topicTitle(returningTopicId) : null;
+    if (returningTitle && returningTopicId) {
+      const contentsY = restoredY ?? contentsPositions.get(returningTopicId);
+      if (contentsY !== undefined) window.scrollTo({ top: contentsY, behavior: 'instant' });
+      revealTitle(returningTitle);
+    } else if (restoredY !== undefined) window.scrollTo({ top: restoredY, behavior: 'instant' });
     else if (target) target.scrollIntoView({
       block: 'start', behavior: samePage && animate && !reducedMotion.matches ? 'smooth' : 'instant',
     });
     else window.scrollTo({ top: 0, behavior: 'instant' });
-    if (focus && heading instanceof HTMLElement) heading.focus({ preventScroll: true });
+    if (transitionTopicId && route.view === 'topic') {
+      const title = topicTitle(transitionTopicId);
+      if (title) revealTitle(title);
+    }
+    setTransitionTopic(transitionTopicId);
+    const focusTarget = returningTitle?.closest('a') ?? heading;
+    if (focus && focusTarget instanceof HTMLElement) focusTarget.focus({ preventScroll: true });
     currentRoute = route;
   };
 
-  if (!animate || samePage || leavingPresentation || readingTools.presenting || readingTools.changing
-    || reducedMotion.matches || typeof document.startViewTransition !== 'function') {
+  if (!canAnimate) {
     commit();
     return;
   }
   const transition = document.startViewTransition(commit);
   activeTransition = transition;
-  // Skipping a transition rejects ready, not the actual document update.
-  void transition.ready.catch(() => {});
+  void transition.ready.catch((error: unknown) => {
+    if (!(error instanceof DOMException && error.name === 'AbortError')) {
+      console.error('Page transition could not capture its endpoints', error);
+    }
+  });
+  // finished reports update failures; observe this separate rejection as well.
+  void transition.updateCallbackDone.catch(() => {});
   try {
     await transition.finished;
   } finally {
-    if (activeTransition === transition) activeTransition = null;
+    if (activeTransition === transition) {
+      activeTransition = null;
+      setTransitionTopic();
+    }
   }
 }
 
@@ -163,14 +232,14 @@ document.addEventListener('click', (event) => {
   const route = routeFromHash(destination.hash);
   if (route.href !== routeFromHash(window.location.hash).href) history.pushState(null, '', destination);
   lastLocation = window.location.href;
-  void showRoute(route);
+  void showRoute(route).catch(reportNavigationError);
 });
 
 function onLocationChange() {
   // Traversing a fragment history entry emits both popstate and hashchange.
   if (lastLocation === window.location.href) return;
   lastLocation = window.location.href;
-  void showRoute(routeFromHash(window.location.hash), { restore: true });
+  void showRoute(routeFromHash(window.location.hash), { restore: true }).catch(reportNavigationError);
 }
 window.addEventListener('popstate', onLocationChange);
 window.addEventListener('hashchange', onLocationChange);

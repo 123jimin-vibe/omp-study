@@ -121,7 +121,9 @@ export function renderArticle(
           break;
         }
         case 'demo': {
-          const child = demos[block.demo]();
+          const createDemo = demos[block.demo];
+          if (!createDemo) throw new Error(`Unregistered demo: ${block.demo}`);
+          const child = createDemo();
           children.push(child);
           child.element.classList.add('demo-screen');
           const holder = el('div', 'demo-print');

@@ -4,7 +4,7 @@ export type LocaleCode = 'ko' | 'en' | 'ja';
 export type ParagraphBlock = { kind: 'paragraph'; text: string };
 export type NoteBlock = { kind: 'note'; title: string; text: string };
 export type CodeBlock = { kind: 'code'; language: string; caption: string; code: string };
-export type DemoBlock = { kind: 'demo'; demo: 'sample-flow' };
+export type DemoBlock = { kind: 'demo'; demo: string };
 export type ContentBlock = ParagraphBlock | NoteBlock | CodeBlock | DemoBlock;
 
 export interface ContentSection {
@@ -21,6 +21,12 @@ export interface Topic {
   sections: readonly ContentSection[];
 }
 
+export interface TopicGroup {
+  id: string;
+  title: string;
+  topics: readonly Topic[];
+}
+
 export interface ArticleLabels {
   back: string;
   onThisPage: string;
@@ -28,25 +34,11 @@ export interface ArticleLabels {
   currentSection: string;
   previousSection: string;
   nextSection: string;
-  placeholder: string;
   copy: string;
   copied: string;
   copyFailed: string;
   codeExample: string;
   end: string;
-}
-
-export interface DemoLabels {
-  title: string;
-  description: string;
-  next: string;
-  reset: string;
-  stages: readonly [string, string, string];
-  states: readonly [string, string, string, string];
-  step: string;
-  complete: string;
-  current: string;
-  pending: string;
 }
 
 export interface ThemeLabels {
@@ -87,8 +79,6 @@ export interface Locale {
     title: readonly [string, string];
     browse: string;
     contents: string;
-    placeholder: string;
-    topicMeta: string;
   };
   nav: { contents: string; language: string; skip: string };
   footer: { label: string };
@@ -97,5 +87,5 @@ export interface Locale {
   reading: ReadingLabels;
   theme: ThemeLabels;
   topics: readonly Topic[];
-  demo: DemoLabels;
+  topicGroups: readonly TopicGroup[];
 }

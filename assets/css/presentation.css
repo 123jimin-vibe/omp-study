@@ -32,8 +32,7 @@
     margin-bottom: 1rem;
   }
 
-  html[data-presentation] .topic-page .topic-number,
-  html[data-presentation] .topic-page .badge {
+  html[data-presentation] .topic-page .topic-number {
     font-size: clamp(0.8125rem, 1vw, 1rem);
   }
 
@@ -102,54 +101,6 @@
 
   html[data-presentation] .topic-page .article-code-source {
     white-space: inherit;
-  }
-
-  html[data-presentation] .sample-flow {
-    padding: clamp(1rem, 1.75vw, 2rem);
-  }
-
-  html[data-presentation] .sample-flow__title {
-    font-size: clamp(1rem, 1.25vw, 1.5rem);
-  }
-
-  html[data-presentation] .sample-flow__description,
-  html[data-presentation] .sample-flow__progress,
-  html[data-presentation] .sample-flow__status {
-    font-size: clamp(0.9375rem, 1vw, 1.1875rem);
-  }
-
-  html[data-presentation] .sample-flow__rail {
-    gap: clamp(0.5rem, 1.5vw, 1.5rem);
-    margin-block: 1.5rem;
-  }
-
-  html[data-presentation] .sample-flow__stage {
-    min-height: 0;
-    padding: clamp(0.75rem, 1vw, 1.25rem);
-  }
-
-  html[data-presentation] .sample-flow__marker {
-    width: clamp(2rem, 2vw, 2.5rem);
-    height: clamp(2rem, 2vw, 2.5rem);
-    font-size: clamp(0.875rem, 1vw, 1.125rem);
-  }
-
-  html[data-presentation] .sample-flow__marker .icon {
-    width: 1em;
-    height: 1em;
-  }
-
-  html[data-presentation] .sample-flow__stage-name {
-    font-size: clamp(0.9375rem, 1.05vw, 1.25rem);
-  }
-
-  html[data-presentation] .sample-flow__stage-complete {
-    font-size: clamp(0.8125rem, 0.9vw, 1rem);
-  }
-
-  html[data-presentation] .sample-flow__controls .button {
-    padding: 0.65rem 0.875rem;
-    font-size: clamp(0.875rem, 1vw, 1.125rem);
   }
 
   html[data-presentation] .topic-page .topic-end {

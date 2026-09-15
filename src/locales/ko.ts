@@ -1,6 +1,5 @@
 import type { Locale } from '../content.ts';
-import { topic, article } from './ko/topic.ts';
-import { demo } from './ko/demo.ts';
+import { topics, topicGroups, article } from './ko/topic.ts';
 
 const ko: Locale = {
   code: 'ko',
@@ -11,8 +10,6 @@ const ko: Locale = {
     title: ['OMP로 알아보는', '하네스 엔지니어링'],
     browse: '목차 살펴보기',
     contents: '목차',
-    placeholder: '임시 콘텐츠',
-    topicMeta: '본문 · 코드 · 인터랙션',
   },
   nav: {
     contents: '목차',
@@ -42,8 +39,8 @@ const ko: Locale = {
     light: '밝은 화면으로 전환',
     dark: '어두운 화면으로 전환',
   },
-  topics: [topic],
-  demo,
+  topics,
+  topicGroups,
 };
 
 export default ko;

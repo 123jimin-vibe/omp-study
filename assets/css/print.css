@@ -43,6 +43,10 @@
   html .hero,
   html .hero-copy,
   html .contents,
+  html .contents-groups,
+  html .contents-group,
+  html .contents-group-panel,
+  html .contents-list,
   html .topic-page,
   html .topic-page .topic-header,
   html .topic-page .topic-layout,
@@ -51,10 +55,7 @@
   html .topic-page .article-note,
   html .topic-page .article-code,
   html .topic-page .article-code-pre,
-  html .demo-print,
-  html .sample-flow-print,
-  html .sample-flow-print-stages,
-  html .sample-flow-print-stage {
+  html .demo-print {
     display: block;
     position: static;
     float: none;
@@ -82,10 +83,10 @@
   html .topic-page .article-copy,
   html .topic-page .article-copy-status,
   html .demo-screen,
-  html .sample-flow__controls,
   html .hero-typography,
   html .browse-link,
   html .topic-link-arrow,
+  html .contents-group-chevron,
   html .sr-only {
     display: none !important;
   }
@@ -116,15 +117,6 @@
   html a {
     color: inherit;
     text-decoration: none;
-  }
-
-  html .badge {
-    max-width: 100%;
-    padding: 2pt 5pt;
-    border-color: var(--line);
-    color: var(--muted);
-    font-size: 8pt;
-    white-space: normal;
   }
 
   html .topic-page .topic-header {
@@ -222,82 +214,6 @@
     word-break: normal;
   }
 
-  html .sample-flow-print {
-    margin: 0;
-    padding: 10pt 12pt;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    background: none;
-    font-size: 10pt;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-  }
-
-  html .sample-flow-print-title {
-    margin: 0 0 5pt;
-    font-size: 12pt;
-    font-weight: 650;
-    line-height: 1.4;
-  }
-
-  html .sample-flow-print-description {
-    margin: 0;
-    color: var(--muted);
-  }
-
-  html .sample-flow-print-progress {
-    margin: 8pt 0;
-    font-size: 9pt;
-    font-variant-numeric: tabular-nums;
-    break-after: avoid;
-  }
-
-  html .sample-flow-print-stages {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  html .sample-flow-print-stage {
-    margin-top: 6pt;
-    padding: 5pt 8pt;
-    border: 1px solid var(--line);
-    break-inside: avoid;
-  }
-
-  html .sample-flow-print-stage[data-state='current'] {
-    border-left: 3pt solid var(--ink);
-  }
-
-  html .sample-flow-print-stage[data-state='complete'] {
-    border-left: 3pt double var(--ink);
-  }
-
-  html .sample-flow-print-number {
-    display: inline-block;
-    min-width: 1.5em;
-    margin-right: 0.5em;
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-  }
-
-  html .sample-flow-print-label {
-    font-weight: 650;
-  }
-
-  html .sample-flow-print-state {
-    display: block;
-    margin-left: 2em;
-    color: var(--muted);
-    font-size: 9pt;
-  }
-
-  html .sample-flow-print-stage[data-state='current'] .sample-flow-print-state,
-  html .sample-flow-print-stage[data-state='complete'] .sample-flow-print-state {
-    color: var(--ink);
-    font-weight: 650;
-  }
-
   html .hero {
     padding: 0 0 22pt;
   }
@@ -345,6 +261,45 @@
     font-size: 8pt;
   }
 
+  html .contents-group::details-content {
+    display: block;
+    content-visibility: visible !important;
+    height: auto;
+    overflow: visible;
+  }
+
+  html .contents-group-toggle {
+    display: block;
+    min-height: 0;
+    padding-block: 12pt 6pt;
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  html .contents-group-number {
+    margin-right: 8pt;
+    font-size: 8pt;
+  }
+
+  html .contents-group-title {
+    font-size: 12pt;
+  }
+
+  html .contents-group-range {
+    margin-left: 8pt;
+    font-size: 8pt;
+  }
+
+  html .contents-group-panel {
+    margin-left: 16pt;
+  }
+
+  html .contents-list {
+    margin: 0 0 8pt;
+    padding: 0;
+    border: 0;
+  }
+
   html .topic-link {
     display: block;
     min-height: 0;
@@ -369,15 +324,6 @@
     font-size: 16pt;
     line-height: 1.4;
     overflow-wrap: anywhere;
-  }
-
-  html .topic-link-meta {
-    margin-top: 5pt;
-    font-size: 9pt;
-  }
-
-  html .topic-placeholder {
-    margin: 7pt 0 0;
   }
 
   html *,

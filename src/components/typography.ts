@@ -20,12 +20,14 @@ uniform float u_hover;
 uniform float u_pressure;
 uniform vec2 u_origin;
 uniform float u_grain;
+uniform vec2 u_focusBand;
 uniform sampler2D u_glyphMask;
 out float v_alpha;
 out float v_color;
 out float v_tint;
 out float v_attachment;
 out float v_shade;
+out float v_feather;
 
 vec2 transport(vec2 p) {
   // Composed shears mix the entire field without fixed lanes or particle orbits.
@@ -89,8 +91,18 @@ void main() {
   v_alpha *= mix(1.0, boundary, detached);
   v_alpha *= 1.0 - texture(u_glyphMask, position).a * detached
     * mix(0.25, 0.92, smoothstep(0.08, 0.30, travel));
-  gl_PointSize = u_grain * u_pixelRatio * mix(2.10, 2.30, a_seed.y)
+  float pointSize = u_grain * u_pixelRatio * mix(2.10, 2.30, a_seed.y)
     * (1.0 + v_attachment * 0.50);
+  float defocus = smoothstep(0.0, 1.0, max(
+    (u_focusBand.x - position.y) / max(u_focusBand.x, 0.001),
+    (position.y - u_focusBand.y) / max(1.0 - u_focusBand.y, 0.001)));
+  float spread = 8.0 * u_pixelRatio * defocus;
+  gl_PointSize = sqrt(pointSize * pointSize + 16.0 * spread * spread);
+  v_feather = mix(0.22, 0.50, defocus);
+  // Broaden the soft kernel without changing its integrated particle coverage.
+  float kernelArea = 0.25 - 0.50 * v_feather + 0.30 * v_feather * v_feather;
+  v_alpha *= (pointSize * pointSize) / (gl_PointSize * gl_PointSize)
+    * 0.15452 / kernelArea;
   v_attachment *= present;
   vec2 ndc = position * 2.0 - 1.0;
   gl_Position = vec4(ndc.x, -ndc.y, 0.0, 1.0);
@@ -103,6 +115,7 @@ in float v_color;
 in float v_tint;
 in float v_attachment;
 in float v_shade;
+in float v_feather;
 uniform vec2 u_size;
 uniform sampler2D u_glyphMask;
 uniform vec3 u_ink;
@@ -118,7 +131,7 @@ void main() {
     : x < 3.0 ? mix(u_rose, u_gold, x - 2.0)
     : mix(u_gold, u_cyan, x - 3.0);
   float radius = length(gl_PointCoord - 0.5);
-  float feather = max(0.22, fwidth(radius) * 0.5);
+  float feather = max(v_feather, fwidth(radius) * 0.5);
   float kernel = 1.0 - smoothstep(0.5 - feather, 0.5, radius);
   float alpha = v_alpha * kernel;
   if (v_attachment > 0.0) {
@@ -169,6 +182,7 @@ export function createTitleTypography(
     pressure: gl.getUniformLocation(program, 'u_pressure'),
     origin: gl.getUniformLocation(program, 'u_origin'),
     grain: gl.getUniformLocation(program, 'u_grain'),
+    focusBand: gl.getUniformLocation(program, 'u_focusBand'),
     glyphMask: gl.getUniformLocation(program, 'u_glyphMask'),
   };
   const colorNames = ['cyan', 'violet', 'rose', 'gold'] as const;
@@ -212,6 +226,11 @@ export function createTitleTypography(
       gl!.bindBuffer(gl!.ARRAY_BUFFER, buffer);
       gl!.bufferData(gl!.ARRAY_BUFFER, glyphs.particles, gl!.STATIC_DRAW);
       gl!.uniform1f(uniforms.grain, glyphs.grain);
+      const canvasBounds = canvas.getBoundingClientRect();
+      const titleBounds = heading.getBoundingClientRect();
+      gl!.uniform2f(uniforms.focusBand,
+        (titleBounds.top - canvasBounds.top - 12) / frame.height,
+        (titleBounds.bottom - canvasBounds.top + 12) / frame.height);
       gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, frame.rasterWidth, frame.rasterHeight,
         0, gl!.RGBA, gl!.UNSIGNED_BYTE, null);
       gl!.uniform1i(uniforms.glyphMask, 0);
