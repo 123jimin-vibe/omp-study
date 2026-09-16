@@ -14,6 +14,7 @@ A component-based article catalogue for the website, based on t0009 and the inde
 - Treat the sections as component groups, not a requirement to read every article in sequence.
 - Component organization does not exclude cross-cutting model/provider behavior. Include caching, variability, and other constraints wherever they materially affect the harness design being taught, even without a dedicated OMP module.
 - The titles below are English working titles; website publication remains Korean-first under s0004.
+- For authoring guidance derived from chapter 01's revisions, see n0023.
 - This is a planning note, not completed articles or a change to the website specifications.
 
 At the user's request, this note combines the reviewed catalogue's former articles 1 and 2 into one introductory article. The remaining articles retain their scopes and are renumbered, producing 47 articles.

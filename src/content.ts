@@ -41,11 +41,9 @@ export interface ContextWindowBlock {
     reasoning: string;
     output: string;
     remaining: string;
-    outputBudget: string;
-    contextRemaining: string;
     outputLimit: string;
-    effectiveOutput: string;
-    outputBudgetDetail: string;
+    generationRange: string;
+    unavailable: string;
     used: string;
     tokens: string;
     scenario: string;
@@ -57,14 +55,9 @@ export interface ContextWindowBlock {
     pause: string;
     replay: string;
     step: string;
-    progress: string;
-    phaseInput: string;
     phaseReasoning: string;
     phaseAnswer: string;
     phaseComplete: string;
-    outputFree: string;
-    outputBlocked: string;
-    outputBlockedDetail: string;
   };
 }
 

@@ -184,6 +184,18 @@
   overflow-wrap: anywhere;
 }
 
+.topic-page .article-inline-code {
+  padding-inline: 0.2em;
+  border-radius: 0.2em;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  white-space: break-spaces;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
 .topic-page .article-references {
   margin: 1.25rem 0 0;
   padding-left: 1.25rem;

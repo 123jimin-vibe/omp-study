@@ -1,5 +1,6 @@
 import type { MountedView, ResponseComparisonBlock } from '../content.ts';
 import { el } from './dom.ts';
+import { appendInlineText } from './inline-text.ts';
 import { highlightCode } from './syntax.ts';
 
 let comparisonSequence = 0;
@@ -14,9 +15,11 @@ export function createResponseComparisonExample(data: ResponseComparisonBlock): 
   element.setAttribute('aria-labelledby', heading.id);
 
   const prompt = el('div', 'response-comparison-prompt');
+  const request = el('p', 'response-comparison-request');
+  appendInlineText(request, data.prompt.text);
   prompt.append(
     el('p', 'response-comparison-label', data.prompt.label),
-    el('p', 'response-comparison-request', data.prompt.text),
+    request,
   );
 
   const controls = el('div', 'response-comparison-controls');
@@ -91,7 +94,9 @@ export function createResponseComparisonExample(data: ResponseComparisonBlock): 
       body.append(row);
     }
     table.append(tableHead, body);
-    panel.append(codeBlock, el('p', 'response-comparison-explanation', candidate.explanation), table);
+    const explanation = el('p', 'response-comparison-explanation');
+    appendInlineText(explanation, candidate.explanation);
+    panel.append(codeBlock, explanation, table);
     controls.append(button);
     panels.append(panel);
     return { button, panel, pre };

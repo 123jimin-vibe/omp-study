@@ -7,6 +7,7 @@ import type {
   MountedView,
 } from '../content.ts';
 import { el, icon } from './dom.ts';
+import { appendInlineText } from './inline-text.ts';
 import { highlightCode } from './syntax.ts';
 import { createExchangeExample } from './exchange-example.ts';
 import { createTokenizationExample } from './tokenization-example.ts';
@@ -116,9 +117,12 @@ export function renderArticle(
 
     for (const block of data.blocks) {
       switch (block.kind) {
-        case 'paragraph':
-          section.append(el('p', 'article-paragraph', block.text));
+        case 'paragraph': {
+          const paragraph = el('p', 'article-paragraph');
+          appendInlineText(paragraph, block.text);
+          section.append(paragraph);
           break;
+        }
         case 'exchange':
           section.append(createExchangeExample(block));
           break;
@@ -155,7 +159,9 @@ export function renderArticle(
         case 'note': {
           const note = el('aside', 'article-note');
           const title = el('p', 'article-note-title', block.title);
-          note.append(title, el('p', 'article-note-text', block.text));
+          const text = el('p', 'article-note-text');
+          appendInlineText(text, block.text);
+          note.append(title, text);
           section.append(note);
           break;
         }
