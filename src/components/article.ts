@@ -13,11 +13,14 @@ import { createExchangeExample } from './exchange-example.ts';
 import { createTokenizationExample } from './tokenization-example.ts';
 import { createContextWindowExample } from './context-window-example.ts';
 import { createResponseComparisonExample } from './response-comparison-example.ts';
+import { createConversationHistoryExample } from './conversation-history-example.ts';
+import { createToolSequenceExample } from './tool-sequence-example.ts';
 
 export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): MountedView {
   const element = el('figure', 'article-code');
   const header = el('figcaption', 'article-code-header');
-  const caption = el('span', 'article-code-caption', block.caption);
+  const caption = el('span', 'article-code-caption');
+  appendInlineText(caption, block.caption);
   const language = el('span', 'article-code-language', block.language);
   const copy = el('button', 'button article-copy');
   const copyLabel = el('span', '', labels.copy);
@@ -30,7 +33,7 @@ export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): Mounte
   highlightCode(code, block.code, block.language);
   pre.tabIndex = 0;
   pre.dir = 'ltr';
-  pre.setAttribute('aria-label', `${labels.codeExample} — ${block.caption}`);
+  pre.setAttribute('aria-label', `${labels.codeExample} — ${caption.textContent}`);
   pre.append(code);
 
   const status = el('p', 'article-copy-status');
@@ -117,6 +120,14 @@ export function renderArticle(
 
     for (const block of data.blocks) {
       switch (block.kind) {
+        case 'subheading': {
+          const subheading = el('h3', 'article-subheading');
+          subheading.id = block.id;
+          subheading.tabIndex = -1;
+          appendInlineText(subheading, block.title);
+          section.append(subheading);
+          break;
+        }
         case 'paragraph': {
           const paragraph = el('p', 'article-paragraph');
           appendInlineText(paragraph, block.text);
@@ -144,6 +155,12 @@ export function renderArticle(
           section.append(child.element);
           break;
         }
+        case 'conversation-history':
+          section.append(createConversationHistoryExample(block));
+          break;
+        case 'tool-sequence':
+          section.append(createToolSequenceExample(block));
+          break;
         case 'references': {
           const references = el('ul', 'article-references');
           for (const source of block.links) {

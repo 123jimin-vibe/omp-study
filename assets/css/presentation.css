@@ -59,7 +59,8 @@
   }
 
   html[data-presentation] .topic-page .article-section,
-  html[data-presentation] .topic-page .article-heading {
+  html[data-presentation] .topic-page .article-heading,
+  html[data-presentation] .topic-page .article-subheading {
     scroll-margin-top: 1.5rem;
   }
 

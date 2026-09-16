@@ -2,6 +2,7 @@
 export type LocaleCode = 'ko' | 'en' | 'ja';
 
 export type ParagraphBlock = { kind: 'paragraph'; text: string };
+export type SubheadingBlock = { kind: 'subheading'; id: string; title: string };
 export type NoteBlock = { kind: 'note'; title: string; text: string };
 export type CodeBlock = { kind: 'code'; language: string; caption: string; code: string };
 export type DemoBlock = { kind: 'demo'; demo: string };
@@ -77,8 +78,41 @@ export interface ResponseComparisonBlock {
   };
 }
 
-export type ContentBlock = ParagraphBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock
-  | ExchangeBlock | TokenizationBlock | ContextWindowBlock | ResponseComparisonBlock;
+export interface ConversationHistoryBlock {
+  kind: 'conversation-history';
+  title: string;
+  labels: {
+    firstRequest: string;
+    secondRequest: string;
+    input: string;
+    response: string;
+    carried: string;
+    newQuestion: string;
+  };
+  priorInput: readonly { role: string; text: string }[];
+  previousResponse: { role: string; text: string };
+  nextMessage: { role: string; text: string };
+  nextResponse: { role: string; text: string };
+}
+
+export interface ToolSequenceBlock {
+  kind: 'tool-sequence';
+  title: string;
+  prompt: string;
+  actors: readonly [string, string, string];
+  events: readonly {
+    from: 0 | 1 | 2;
+    to: 0 | 1 | 2;
+    label: string;
+    detail: string;
+    kind: 'request' | 'call' | 'read' | 'result' | 'answer';
+    correlation?: string;
+  }[];
+}
+
+export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock
+  | ExchangeBlock | TokenizationBlock | ContextWindowBlock | ResponseComparisonBlock
+  | ConversationHistoryBlock | ToolSequenceBlock;
 
 export interface ContentSection {
   id: string;

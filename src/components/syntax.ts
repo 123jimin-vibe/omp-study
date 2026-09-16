@@ -1,9 +1,11 @@
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import typescript from 'highlight.js/lib/languages/typescript';
+import json from 'highlight.js/lib/languages/json';
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('json', json);
 
 export function highlightCode(element: HTMLElement, source: string, language: string): void {
   const name = language.trim().toLowerCase();

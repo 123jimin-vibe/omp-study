@@ -1,0 +1,257 @@
+.conversation-history-example {
+  --history-link-gap: 2.5rem;
+}
+
+.conversation-history-example .history-flow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem var(--history-link-gap);
+}
+
+.conversation-history-example .history-request,
+.conversation-history-example .history-message-body {
+  min-width: 0;
+}
+
+.conversation-history-example .history-request-heading {
+  margin: 0 0 0.625rem;
+  font-size: 0.9375em;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.conversation-history-example .history-input {
+  border: 1.5px solid var(--example-input);
+  border-radius: 0.375rem;
+  background: var(--surface);
+}
+
+.conversation-history-example .history-label {
+  margin: 0;
+  font-size: 0.75em;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.conversation-history-example .history-input-label {
+  padding: 0.5rem 0.625rem;
+  border-bottom: 1px solid var(--example-input);
+  border-radius: 0.25rem 0.25rem 0 0;
+  background: var(--example-input-fill);
+  color: var(--example-input);
+}
+
+.conversation-history-example .history-input-body {
+  padding: 0.625rem;
+}
+
+.conversation-history-example .history-messages {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conversation-history-example .history-message {
+  --history-message-color: var(--example-input);
+  --history-message-fill: var(--example-input-fill);
+  display: grid;
+  grid-template-columns: 1.375rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.625rem;
+  border: 1px solid var(--line);
+  border-inline-start: 2px solid var(--history-message-color);
+  border-radius: 0.25rem;
+  background: var(--history-message-fill);
+}
+
+.conversation-history-example .history-message-response {
+  --history-message-color: var(--example-output);
+  --history-message-fill: var(--example-output-fill);
+}
+
+.conversation-history-example .history-message-new {
+  --history-message-color: var(--example-reasoning);
+  --history-message-fill: var(--example-reasoning-fill);
+}
+
+.conversation-history-example .history-identity {
+  display: grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: var(--history-message-color);
+  font-size: 0.6875em;
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.conversation-history-example .history-role {
+  display: block;
+  color: var(--history-message-color);
+  font-size: 0.75em;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.conversation-history-example .history-message-text {
+  margin: 0.25rem 0 0;
+  font-size: 0.875em;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.conversation-history-example .history-carried {
+  padding-inline-start: 0.5rem;
+  border-inline-start: 1px dashed var(--example-input);
+}
+
+.conversation-history-example .history-group-label {
+  margin-bottom: 0.5rem;
+  color: var(--example-input);
+}
+
+.conversation-history-example .history-added {
+  margin-top: 0.75rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--example-reasoning);
+}
+
+.conversation-history-example .history-added .history-group-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  color: var(--example-reasoning);
+}
+
+.conversation-history-example .history-response {
+  margin-top: 0.75rem;
+}
+
+.conversation-history-example .history-response-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.375rem;
+  color: var(--example-output);
+}
+
+.conversation-history-example .history-response-label .icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.conversation-history-example .history-response-body {
+  position: relative;
+}
+
+.conversation-history-example .history-carry-arrow {
+  position: absolute;
+  inset-inline-start: 100%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  width: var(--history-link-gap);
+  height: 0.625rem;
+  color: var(--example-output);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.conversation-history-example .history-arrow-line {
+  flex: 1;
+  border-top: 1.5px solid currentColor;
+}
+
+.conversation-history-example .history-arrow-head {
+  flex: none;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-inline-end: 0.125rem;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+@media screen and (max-width: 720px) {
+  .conversation-history-example .history-flow {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+
+  .conversation-history-example .history-carry-arrow {
+    position: static;
+    flex-direction: column;
+    width: 0.625rem;
+    height: 2rem;
+    margin: 0.625rem auto 0;
+    transform: none;
+  }
+
+  .conversation-history-example .history-arrow-line {
+    border-top: 0;
+    border-inline-start: 1.5px solid currentColor;
+  }
+
+  .conversation-history-example .history-arrow-head {
+    margin-inline-end: 0;
+    margin-bottom: 0.125rem;
+    border-top: 0;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+  }
+}
+
+@media print {
+  html:root .conversation-history-example {
+    --history-link-gap: 18pt;
+    break-inside: avoid;
+  }
+
+  .conversation-history-example .history-flow {
+    column-gap: var(--history-link-gap);
+  }
+
+  .conversation-history-example .history-request-heading {
+    margin-bottom: 5pt;
+  }
+
+  .conversation-history-example .history-input-label,
+  .conversation-history-example .history-input-body,
+  .conversation-history-example .history-message {
+    padding: 5pt;
+  }
+
+  .conversation-history-example .history-message {
+    gap: 4pt;
+    grid-template-columns: 12pt minmax(0, 1fr);
+    break-inside: avoid;
+  }
+
+  .conversation-history-example .history-identity {
+    width: 12pt;
+    height: 12pt;
+  }
+
+  .conversation-history-example .history-message-text {
+    font-size: 1em;
+    orphans: 2;
+    widows: 2;
+  }
+
+  .conversation-history-example .history-request-heading,
+  .conversation-history-example .history-label {
+    break-after: avoid;
+  }
+}

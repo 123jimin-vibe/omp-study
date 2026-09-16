@@ -1,11 +1,16 @@
 import type { ExchangeBlock } from '../content.ts';
 import { el, icon } from './dom.ts';
+import { appendInlineText } from './inline-text.ts';
 
 export function createExchangeExample(data: ExchangeBlock): HTMLElement {
   const figure = el('figure', 'learning-figure exchange-example');
   const flow = el('div', 'exchange-flow');
   const input = el('div', 'exchange-port exchange-input');
-  input.append(el('p', 'exchange-label', data.input.label), el('p', 'exchange-text', data.input.text));
+  const inputLabel = el('p', 'exchange-label');
+  const inputText = el('p', 'exchange-text');
+  appendInlineText(inputLabel, data.input.label);
+  appendInlineText(inputText, data.input.text);
+  input.append(inputLabel, inputText);
 
   const connector = el('div', 'exchange-connector');
   connector.append(icon('right'));
@@ -13,7 +18,11 @@ export function createExchangeExample(data: ExchangeBlock): HTMLElement {
   const outputs = el('div', 'exchange-outputs');
   for (const output of data.outputs) {
     const port = el('div', 'exchange-port exchange-output');
-    port.append(el('p', 'exchange-label', output.label), el('p', 'exchange-text', output.text));
+    const label = el('p', 'exchange-label');
+    const text = el('p', 'exchange-text');
+    appendInlineText(label, output.label);
+    appendInlineText(text, output.text);
+    port.append(label, text);
     outputs.append(port);
   }
   if (data.outputs.length > 1) flow.classList.add('exchange-branch');
