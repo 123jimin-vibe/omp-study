@@ -74,6 +74,16 @@ export function renderTitle(
       title.dataset.topicTitle = topic.id;
       title.style.viewTransitionName = CSS.escape(`topic-${topic.id}`);
       text.append(title);
+      const status = topic.sections.length === 0
+        ? { key: 'unwritten', label: locale.home.unwritten }
+        : !topic.reviewed
+          ? { key: 'unreviewed', label: locale.home.unreviewed }
+          : undefined;
+      if (status) {
+        const badge = el('span', 'topic-status', status.label);
+        badge.dataset.status = status.key;
+        text.append(badge);
+      }
       const arrow = el('span', 'topic-link-arrow');
       arrow.append(icon('right'));
       link.append(number, text, arrow);

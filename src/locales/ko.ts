@@ -10,6 +10,8 @@ const ko: Locale = {
     title: ['OMP로 알아보는', '하네스 엔지니어링'],
     browse: '목차 살펴보기',
     contents: '목차',
+    unwritten: '미작성',
+    unreviewed: '검토 전',
   },
   nav: {
     contents: '목차',

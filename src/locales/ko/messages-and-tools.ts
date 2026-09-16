@@ -102,6 +102,7 @@ export const messagesAndToolsTopic: Topic = {
   number: '02',
   title: '메시지와 도구 호출',
   description: '대화에 실행 결과를 더해 답변을 만드는 과정.',
+  reviewed: true,
   sections: [
     {
       id: 'assembling-messages',

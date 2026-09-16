@@ -15,6 +15,7 @@ export const topicGroups: readonly TopicGroup[] = [
         number: '01',
         title: '대규모 언어 모델',
         description: '주어진 문맥을 바탕으로 텍스트를 생성하는 모델.',
+        reviewed: true,
         sections: [
           {
             id: 'input-and-output',

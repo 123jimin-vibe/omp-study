@@ -128,6 +128,7 @@ export interface Topic {
   title: string;
   description: string;
   sections: readonly ContentSection[];
+  reviewed?: boolean;
 }
 
 export interface TopicGroup {
@@ -192,6 +193,8 @@ export interface Locale {
     title: readonly [string, string];
     browse: string;
     contents: string;
+    unwritten: string;
+    unreviewed: string;
   };
   nav: { contents: string; language: string; skip: string };
   footer: { label: string };

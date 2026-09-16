@@ -81,8 +81,10 @@ html[data-theme="dark"] .hero {
 .topic-link { display: grid; grid-template-columns: 44px minmax(0, 1fr) 54px; align-items: center; gap: 16px; min-height: 100px; border-bottom: 1px solid var(--line); transition: background-color 180ms ease; }
 .contents-list > li:last-child .topic-link { border-bottom: 0; }
 .topic-link .topic-number { align-self: start; margin-top: 30px; color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
-.topic-link-copy { min-width: 0; padding-block: 24px; }
+.topic-link-copy { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 10px; min-width: 0; padding-block: 24px; }
 .topic-link .topic-title { display: block; width: fit-content; max-width: 100%; font-size: 26px; font-weight: 600; line-height: 1.45; letter-spacing: -0.055em; word-break: keep-all; overflow-wrap: anywhere; }
+.topic-status { display: inline-flex; align-items: center; min-height: 20px; padding: 2px 7px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 10px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+.topic-status[data-status="unreviewed"] { border-color: var(--accent); color: var(--accent); }
 .topic-link-arrow { display: flex; justify-content: center; align-items: center; justify-self: end; width: 44px; height: 44px; margin-right: 4px; border: 1px solid var(--line); border-radius: 50%; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease; }
 .topic-link-arrow .icon { width: 18px; height: 18px; transition: transform 180ms ease; }
 .topic-link:hover { background: var(--accent-soft); }
