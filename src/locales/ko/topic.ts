@@ -3,6 +3,12 @@ import { tokenizationExample } from './tokenization.ts';
 import { contextWindowExample } from './context-window.ts';
 import { responseComparisonExample } from './response-comparison.ts';
 import { messagesAndToolsTopic } from './messages-and-tools.ts';
+import { codingAgentsAndOmpTopic } from './coding-agents-and-omp.ts';
+import { sessionRuntimeTopic } from './session-runtime.ts';
+import { projectInstructionsAndPromptAssemblyTopic } from './project-instructions-and-prompt-assembly.ts';
+import { agentLoopTopic } from './agent-loop.ts';
+import { toolDefinitionsAndRegistryTopic } from './tool-definitions-and-registry.ts';
+import { toolPermissionsTopic } from './tool-permissions.ts';
 
 export const topicGroups: readonly TopicGroup[] = [
   {
@@ -179,12 +185,12 @@ export const topicGroups: readonly TopicGroup[] = [
     number: 'II',
     title: '핵심 런타임',
     topics: [
-      { id: 'coding-agents-and-omp', number: '03', title: '코딩 에이전트와 OMP', description: '', sections: [] },
-      { id: 'session-runtime', number: '04', title: '세션 런타임', description: '', sections: [] },
-      { id: 'project-instructions-and-prompt-assembly', number: '05', title: '프로젝트 지침과 프롬프트 구성', description: '', sections: [] },
-      { id: 'agent-loop', number: '06', title: '에이전트 루프', description: '', sections: [] },
-      { id: 'tool-definitions-and-registry', number: '07', title: '도구 정의와 레지스트리', description: '', sections: [] },
-      { id: 'tool-permissions', number: '08', title: '도구 권한', description: '', sections: [] },
+      codingAgentsAndOmpTopic,
+      sessionRuntimeTopic,
+      projectInstructionsAndPromptAssemblyTopic,
+      agentLoopTopic,
+      toolDefinitionsAndRegistryTopic,
+      toolPermissionsTopic,
     ],
   },
   {

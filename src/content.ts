@@ -110,9 +110,25 @@ export interface ToolSequenceBlock {
   }[];
 }
 
+export interface ExecutionPathBlock {
+  kind: 'execution-path';
+  title: string;
+  input: { label: string; text: string };
+  labels: { choose: string };
+  paths: readonly {
+    label: string;
+    stages: readonly {
+      label: string;
+      text: string;
+      state: 'complete' | 'blocked' | 'skipped';
+    }[];
+    result: { label: string; text: string };
+  }[];
+}
+
 export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock
   | ExchangeBlock | TokenizationBlock | ContextWindowBlock | ResponseComparisonBlock
-  | ConversationHistoryBlock | ToolSequenceBlock;
+  | ConversationHistoryBlock | ToolSequenceBlock | ExecutionPathBlock;
 
 export interface ContentSection {
   id: string;

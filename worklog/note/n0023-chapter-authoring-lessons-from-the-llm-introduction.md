@@ -34,6 +34,29 @@ build does not establish editorial acceptance.
 | Technical typography | API paths and expressions appeared as ordinary prose. | Render identifiers, field paths, and code expressions as semantic inline code, including in example prompts and explanations. | t0018 |
 | Chapter integration | Category and chapter numbers initially looked alike, and previous/next chapter links needed separate work. | Treat numbering, catalogue position, chapter navigation, and section navigation as separate concerns. Reuse the shared chapter shell rather than rebuilding navigation inside article content. | t0014; t0016 |
 
+## Additional recurring mistakes found in chapters 03–08
+
+The chapter-03 correction and prose review of chapters 03–08 exposed the same
+editorial problems beyond the introductory chapter:
+
+| Pattern | Weak form | Better practice |
+| --- | --- | --- |
+| Literal, noun-heavy Korean | “모델 요청은 네 번입니다”, “작업 공간의 변화가 되는 지점” | Name the actor and action: “모델 요청은 네 번 이루어집니다”, “모델이 생성한 텍스트는 도구를 통해 실제 작업으로 이어집니다.” Prefer ordinary Korean verbs over translated abstractions such as “경로”, “상태”, and “지점” when no literal path, state, or point is being taught. |
+| Missing setup for examples | A fixture or command appears before the reader knows what it verifies and which cases matter. | Introduce the artifact by purpose, relevant inputs, and expected results before tracing the agent loop. The reader should understand the task without reconstructing it from later tool output. |
+| Dense transition summaries | One sentence lists several requests or transformations without saying why another step is necessary. | Give each request an ordinal or visible transition and state what new information it adds. For example: the first request chooses `read`; the second sees the file and chooses `edit`; the third sees the edit result and chooses the check; the fourth sees the check result and answers. |
+| Blurred execution boundaries | Prose says generated text “becomes a workspace change” without naming the executor. | Keep actors explicit: the model generates a tool name and arguments; the harness validates and dispatches them; the tool implementation changes files or starts a process; the result returns in the next request. |
+| Defensive provenance inside the lesson | The main flow stops to say that an authored trace is not a captured model run, even when no claim of live capture is made. | Do not add disclaimers pre-emptively. State provenance only where a reader could otherwise mistake measured data for illustrative data, and place it in a concise caption or source note. |
+| Negative qualifications without a decision | Repeated “X alone does not mean Y” sentences add caution but no usable boundary. | State the positive rule or exact failure condition. If a start event precedes approval, say which call marks actual execution; if a tool is only registered, say which active set controls exposure. |
+| Diagram narration | A paragraph repeats every node already visible in the figure. | Use the paragraph to explain causality, an omitted edge case, or the harness consequence. Delete prose that merely walks through labels in order. |
+
+These are not cosmetic preferences. Unnatural abstractions obscure the actor,
+and missing setup forces readers to infer the contract that the example is
+supposed to teach. During editorial review, underline every noun phrase ending
+in “과정”, “상태”, “경로”, “지점”, or “부분”; keep it only when the term names a
+real mechanism. Then verify that every sentence answers one of four questions:
+**who acts, what changes, why another step follows, or what the harness must
+preserve**.
+
 ## Analysis of the recurring pattern
 
 **[INFERENCE] The recurring gap was instructional judgment, not merely missing

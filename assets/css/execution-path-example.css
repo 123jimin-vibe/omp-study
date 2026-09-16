@@ -1,0 +1,193 @@
+.execution-path-example {
+  --path-stop: #a3333b;
+  --path-stop-fill: #fbecee;
+}
+
+html[data-theme="dark"] .execution-path-example {
+  --path-stop: #ffb0b6;
+  --path-stop-fill: #42242b;
+}
+
+.execution-path-input {
+  padding: 0.875rem 1rem;
+  border-left: 3px solid var(--example-input);
+  background: var(--example-input-fill);
+}
+
+.execution-path-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.execution-path-text {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.execution-path-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+
+.execution-path-button {
+  min-height: 44px;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: 0.375rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: start;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.execution-path-button[aria-selected="true"] {
+  border-color: var(--example-input);
+  background: var(--example-input-fill);
+  color: var(--example-input);
+  box-shadow: inset 0 -2px var(--example-input);
+}
+
+/* All cases size the same grid cell; switching never moves the following prose. */
+.execution-path-panels { display: grid; }
+.execution-path-panel {
+  grid-area: 1 / 1;
+  min-width: 0;
+  visibility: hidden;
+}
+.execution-path-panel[data-active="true"] { visibility: visible; }
+.execution-path-case { display: none; }
+
+.execution-path-stages {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.execution-path-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding-block: 0.75rem;
+}
+
+.execution-path-marker {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--example-output);
+  border-radius: 50%;
+  background: var(--example-output-fill);
+  color: var(--example-output);
+  font: 0.8125rem / 1 var(--font-mono);
+}
+
+.execution-path-stage::after {
+  content: "";
+  position: absolute;
+  top: 2.5rem;
+  bottom: -0.75rem;
+  left: 0.8125rem;
+  border-left: 2px solid var(--example-output);
+}
+
+.execution-path-stage:last-child::after { bottom: calc(-1.5rem - 1px); }
+
+.execution-path-stage-body {
+  min-width: 0;
+  padding: 0 0 0.875rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.execution-path-blocked .execution-path-marker {
+  border-color: var(--path-stop);
+  background: var(--path-stop-fill);
+  color: var(--path-stop);
+  border-radius: 0.25rem;
+  font-size: 1.25rem;
+}
+
+.execution-path-blocked .execution-path-label { color: var(--path-stop); }
+.execution-path-blocked::after,
+.execution-path-skipped::after { border-left: 2px dashed var(--line); }
+
+.execution-path-skipped .execution-path-marker {
+  border-style: dashed;
+  border-color: var(--muted);
+  background: var(--surface);
+  color: var(--muted);
+}
+.execution-path-skipped .execution-path-label { color: var(--muted); }
+
+.execution-path-result {
+  position: relative;
+  margin: 0.5rem 0 0 2.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.375rem;
+  background: var(--paper);
+}
+
+.execution-path-result::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: -1.75rem;
+  width: 1.5rem;
+  border-top: 2px solid var(--line);
+}
+
+.execution-path-result::after {
+  content: "";
+  position: absolute;
+  top: calc(1rem - 3px);
+  left: -0.375rem;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+  transform: rotate(45deg);
+}
+
+@media (max-width: 560px) {
+  .execution-path-stage { column-gap: 0.5rem; }
+  .execution-path-result { margin-left: 2.25rem; padding: 0.75rem; }
+  .execution-path-result::before { left: -1.5rem; width: 1.25rem; }
+}
+
+@media print {
+  html:root .execution-path-example {
+    --path-stop: #7c2630;
+    --path-stop-fill: #fff;
+    break-inside: auto;
+  }
+  html .execution-path-controls { display: none; }
+  html .execution-path-panels { display: block; }
+  html .execution-path-panel {
+    display: block;
+    visibility: visible;
+    margin-block: 12pt;
+    break-inside: auto;
+  }
+  html .execution-path-case {
+    display: block;
+    margin: 0 0 6pt;
+    font-size: 10pt;
+  }
+  html .execution-path-stage { break-inside: avoid; padding-block: 6pt; }
+  html .execution-path-stage::after { top: calc(6pt + 1.75rem); bottom: -6pt; }
+  html .execution-path-stage:last-child::after { bottom: calc(-8pt - 1rem - 1px); }
+  html .execution-path-label { font-size: 9pt; }
+  html .execution-path-input,
+  html .execution-path-result { break-inside: avoid; }
+  html .execution-path-result { margin-top: 8pt; }
+}

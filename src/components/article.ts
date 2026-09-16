@@ -15,6 +15,7 @@ import { createContextWindowExample } from './context-window-example.ts';
 import { createResponseComparisonExample } from './response-comparison-example.ts';
 import { createConversationHistoryExample } from './conversation-history-example.ts';
 import { createToolSequenceExample } from './tool-sequence-example.ts';
+import { createExecutionPathExample } from './execution-path-example.ts';
 
 export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): MountedView {
   const element = el('figure', 'article-code');
@@ -161,6 +162,12 @@ export function renderArticle(
         case 'tool-sequence':
           section.append(createToolSequenceExample(block));
           break;
+        case 'execution-path': {
+          const child = createExecutionPathExample(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
         case 'references': {
           const references = el('ul', 'article-references');
           for (const source of block.links) {
