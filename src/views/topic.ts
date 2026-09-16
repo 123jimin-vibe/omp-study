@@ -43,7 +43,22 @@ function fitTopicTitle(title: HTMLHeadingElement, header: HTMLElement): () => vo
   };
 }
 
-export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegistry): MountedView {
+function createChapterLink(topic: Topic, direction: 'prev' | 'next', label: string): HTMLAnchorElement {
+  const link = el('a', `chapter-link chapter-link-${direction}`);
+  link.href = `#/topic/${encodeURIComponent(topic.id)}`;
+  link.rel = direction;
+  const copy = el('span', 'chapter-link-copy');
+  const title = el('span', 'chapter-link-title');
+  title.append(el('span', 'chapter-link-number', topic.number), document.createTextNode(` ${topic.title}`));
+  copy.append(el('span', 'chapter-link-label', label), title);
+  if (direction === 'prev') link.append(icon('left'), copy);
+  else link.append(copy, icon('right'));
+  return link;
+}
+
+export function renderTopic(
+  topic: Topic, topics: readonly Topic[], labels: ArticleLabels, demos: DemoRegistry,
+): MountedView {
   const element = el('div', 'topic-page page-width');
   const back = el('a', 'topic-back', labels.back);
   back.href = '#/?section=contents';
@@ -60,7 +75,23 @@ export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegi
   if (topic.description) header.append(el('p', 'topic-description', topic.description));
   element.append(back, header);
   const disposeTitle = fitTopicTitle(title, header);
-  if (!topic.sections.length) return { element, dispose: disposeTitle };
+  const footer = el('footer', 'topic-end');
+  const navigation = el('nav', 'chapter-navigation');
+  navigation.setAttribute('aria-label', labels.chapterNavigation);
+  const position = topics.findIndex(entry => entry.id === topic.id);
+  const previous = topics[position - 1];
+  const next = position >= 0 ? topics[position + 1] : undefined;
+  if (previous) navigation.append(createChapterLink(previous, 'prev', labels.previousChapter));
+  if (next) navigation.append(createChapterLink(next, 'next', labels.nextChapter));
+  if (navigation.childElementCount) footer.append(navigation);
+  const end = el('a', 'topic-back', labels.end);
+  end.href = '#/?section=contents';
+  end.prepend(icon('left'));
+  footer.append(end);
+  if (!topic.sections.length) {
+    element.append(footer);
+    return { element, dispose: disposeTitle };
+  }
 
   const layout = el('div', 'topic-layout');
   const index = el('nav', 'topic-index');
@@ -68,24 +99,25 @@ export function renderTopic(topic: Topic, labels: ArticleLabels, demos: DemoRegi
   const indexTitle = el('p', 'topic-index-title', labels.onThisPage);
   const links = el('ul', 'topic-index-list');
   const indexLinks: HTMLAnchorElement[] = [];
+  let groupLinks = links;
   for (const section of topic.sections) {
+    if (section.group) {
+      const group = el('li', 'topic-index-group');
+      groupLinks = el('ul', 'topic-index-group-list');
+      group.append(el('p', 'topic-index-group-title', section.group.title), groupLinks);
+      links.append(group);
+    }
     const item = el('li');
     const link = el('a', 'topic-index-link', section.title);
     link.href = `#/topic/${encodeURIComponent(topic.id)}?section=${encodeURIComponent(section.id)}`;
     item.append(link);
     indexLinks.push(link);
-    links.append(item);
+    groupLinks.append(item);
   }
   index.append(indexTitle, links);
 
   const article = renderArticle(topic.sections, labels, demos);
   layout.append(index, article.element);
-
-  const footer = el('footer', 'topic-end');
-  const end = el('a', 'topic-back', labels.end);
-  end.href = '#/?section=contents';
-  end.prepend(icon('left'));
-  footer.append(end);
 
   element.append(layout, footer);
   const sectionNavigation = createSectionNavigation(topic, labels, element, indexLinks);

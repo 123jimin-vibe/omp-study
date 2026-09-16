@@ -1,0 +1,171 @@
+.tokenization-example .tokenization-original {
+  margin-top: 1.2em;
+}
+
+.tokenization-example .tokenization-label {
+  color: var(--muted);
+  font-size: 0.75em;
+  font-weight: 550;
+  line-height: 1.5;
+}
+
+.tokenization-example .tokenization-sentence {
+  margin-top: 0.3em;
+  color: var(--ink);
+  font-size: 1.55em;
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.tokenization-example .tokenization-mapping {
+  position: relative;
+  width: 1px;
+  height: 1.65em;
+  margin: 0.7em 0 0.9em 0.4em;
+  background: var(--muted);
+}
+
+.tokenization-example .tokenization-mapping::after {
+  position: absolute;
+  right: -0.2em;
+  bottom: 0;
+  width: 0.4em;
+  height: 0.4em;
+  border-right: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.tokenization-example .tokenization-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.3em 1em;
+  margin-bottom: 0.65em;
+}
+
+.tokenization-example .tokenization-count {
+  color: var(--ink);
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+.tokenization-example .tokenization-count strong {
+  margin-right: 0.12em;
+  font-size: 1.6em;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.tokenization-example .tokenization-encoding {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.tokenization-example .tokenization-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.4em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tokenization-example .tokenization-chip {
+  display: grid;
+  justify-items: center;
+  align-content: space-between;
+  gap: 0.45em;
+  min-width: 3.55em;
+  padding: 0.65em 0.45em 0.5em;
+  border: 1px solid currentColor;
+  border-radius: 0.4em;
+  color: var(--example-input);
+  background: var(--example-input-fill);
+}
+
+.tokenization-example .tokenization-chip:nth-child(3n + 2) {
+  color: var(--example-reasoning);
+  background: var(--example-reasoning-fill);
+}
+
+.tokenization-example .tokenization-chip:nth-child(3n) {
+  color: var(--example-output);
+  background: var(--example-output-fill);
+}
+
+.tokenization-example .tokenization-piece {
+  font-family: var(--font-sans);
+  font-size: 1.05em;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.tokenization-example .tokenization-space {
+  position: relative;
+  display: inline-block;
+  width: 0.65em;
+  white-space: pre;
+}
+
+.tokenization-example .tokenization-space::after {
+  position: absolute;
+  right: 0.09em;
+  bottom: 0.15em;
+  left: 0.09em;
+  height: 0.25em;
+  border: 1px solid currentColor;
+  border-top: 0;
+  content: "";
+}
+
+.tokenization-example .tokenization-id {
+  font-family: var(--font-mono);
+  font-size: 0.62em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.tokenization-example .tokenization-legend {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin-top: 0.85em;
+  color: var(--muted);
+  font-size: 0.75em;
+  line-height: 1.6;
+}
+
+.tokenization-example .tokenization-source {
+  display: inline-block;
+  margin-top: 0.55em;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+
+@media print {
+  .tokenization-example .tokenization-chip:nth-child(n) {
+    color: var(--ink);
+    background: transparent;
+    break-inside: avoid;
+  }
+
+  .tokenization-example .tokenization-mapping {
+    background: none;
+    border-left: 1px solid var(--muted);
+  }
+}

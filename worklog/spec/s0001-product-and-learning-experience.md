@@ -16,6 +16,11 @@ coding agent.
 The guide MUST cover harness-engineering techniques in a progression from
 foundational mechanisms, such as tool calling, to more complex agent behavior.
 
+The guide MUST also explain cross-cutting model and provider behavior that materially
+affects harness engineering, even when it does not correspond to a distinct OMP
+module. Examples include prompt/token caching, response variability, resource
+budgets, and result verification; connect these behaviors to concrete design choices.
+
 ## Learning experience
 
 - Explanations SHOULD be concise and example-driven.

@@ -49,11 +49,11 @@ export function renderTitle(
   contentsHeader.append(contentsHeading, el('span', 'contents-count', count));
 
   const groups = el('div', 'contents-groups');
-  for (const [index, group] of locale.topicGroups.entries()) {
+  for (const group of locale.topicGroups) {
     const details = el('details', 'contents-group');
     details.dataset.groupId = group.id;
     const summary = el('summary', 'contents-group-toggle');
-    const number = el('span', 'contents-group-number', sectionNumber.format(index + 1));
+    const number = el('span', 'contents-group-number', group.number);
     number.setAttribute('aria-hidden', 'true');
     const label = el('span', 'contents-group-title', group.title);
     const range = el('span', 'contents-group-range', `${group.topics[0]?.number ?? ''}–${group.topics.at(-1)?.number ?? ''}`);

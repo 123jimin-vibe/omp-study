@@ -165,7 +165,7 @@ async function showRoute(
       mounted = route.view === 'home' ? renderTitle(locale, {
         enter: currentRoute === null, expandedGroups, revealTopicId: returningTopicId,
       })
-        : route.view === 'topic' ? renderTopic(route.topic, locale.article, demos)
+        : route.view === 'topic' ? renderTopic(route.topic, locale.topics, locale.article, demos)
           : renderMissing();
       main.replaceChildren(mounted.element);
     }

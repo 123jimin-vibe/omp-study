@@ -12,6 +12,7 @@ A component-based article catalogue for the website, based on t0009 and the inde
 - Begin with a short, skimmable introduction to LLMs, limited to concepts relevant to end-users.
 - Use direct subject titles, substantive scopes, and explicit ties to components.
 - Treat the sections as component groups, not a requirement to read every article in sequence.
+- Component organization does not exclude cross-cutting model/provider behavior. Include caching, variability, and other constraints wherever they materially affect the harness design being taught, even without a dedicated OMP module.
 - The titles below are English working titles; website publication remains Korean-first under s0004.
 - This is a planning note, not completed articles or a change to the website specifications.
 
@@ -23,7 +24,7 @@ These articles introduce the model and its interface before discussing OMP. They
 
 | # | Article | Scope |
 | --- | --- | --- |
-| 1 | **Large language models** | A brief end-user introduction: model input and generated output; tokens as units of context limits and usage; context windows and output limits; response variability; factual errors and the need to check results. Keep it skimmable. Omit model architecture, training procedures, and generation mathematics. |
+| 1 | **Large language models** | A brief introduction: input and generated output; tokenization; context, reasoning, and output budgets; prompt/token caching and its effect on request layout, cost, and latency. Organize response variability and factual reliability separately from these mechanics, and connect them to harness validation and evaluation using meaningful examples. Keep it skimmable. Omit model architecture, training procedures, and generation mathematics. |
 | 2 | **Messages and prompts** | Conversation roles, text and image content, chat formatting, and the messages included in a request. Identify provider-specific formats rather than treating them as universal. |
 | 3 | **Function calling** | Function definitions, parameter schemas, generated arguments, application-side execution, and returning results. Follow a file-reading function through a complete call. Introduce “tool calling” as the corresponding API terminology. |
 

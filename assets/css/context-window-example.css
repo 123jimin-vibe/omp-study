@@ -1,0 +1,451 @@
+.context-window-example {
+  font-variant-numeric: tabular-nums;
+}
+
+.context-window-example .context-scenarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.context-window-example .context-scenario-button,
+.context-window-example .context-play-button {
+  min-height: 44px;
+  padding: 0.5em 0.85em;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85em;
+  font-weight: 650;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.context-window-example .context-scenario-button[aria-pressed="true"] {
+  border-color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--ink);
+}
+
+.context-window-example .context-scenario-button:hover,
+.context-window-example .context-play-button:hover {
+  border-color: var(--ink);
+}
+
+.context-window-example .context-scenario-button:focus-visible,
+.context-window-example .context-play-button:focus-visible,
+.context-window-example .context-progress:focus-visible {
+  outline: 3px solid var(--example-input);
+  outline-offset: 3px;
+}
+
+.context-window-example .context-scenario-summary {
+  display: grid;
+  margin-bottom: 1.25em;
+}
+
+.context-window-example .context-scenario-panel,
+.context-window-example .context-phase-label,
+.context-window-example .context-play-label {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.context-window-example .is-active {
+  visibility: visible;
+}
+
+.context-window-example .context-playback {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5em 1em;
+  margin-bottom: 1.2em;
+  padding: 0.85em 1em;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+}
+
+.context-window-example .context-play-button {
+  display: grid;
+  min-width: 6em;
+  white-space: nowrap;
+}
+
+.context-window-example .context-progress-label {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.8em;
+}
+
+.context-window-example .context-progress-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.context-window-example .context-progress {
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  accent-color: var(--example-input);
+  cursor: pointer;
+}
+
+.context-window-example .context-phase {
+  display: grid;
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.context-window-example .context-selected-scenario {
+  margin: 0 0 0.35em;
+  font-size: 0.85em;
+  font-weight: 650;
+}
+
+.context-window-example .context-scenario-explanation,
+.context-window-example .context-generation-detail {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.context-window-example .context-budget-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4em 1em;
+  margin-bottom: 0.65em;
+}
+
+.context-window-example .context-budget-heading h4 {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 650;
+}
+
+.context-window-example .context-budget-usage {
+  display: grid;
+  text-align: end;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.context-window-example .context-usage-value,
+.context-window-example .context-usage-reserve {
+  grid-area: 1 / 1;
+}
+
+.context-window-example .context-usage-reserve {
+  visibility: hidden;
+}
+
+.context-window-example .context-window-bar,
+.context-window-example .context-generation-bar {
+  display: flex;
+  height: 2.75em;
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
+  border-radius: 0.3rem;
+  background: var(--surface);
+}
+
+.context-window-example .context-segment {
+  flex: 0 0 auto;
+  height: 100%;
+  box-shadow: inset -1px 0 0 var(--segment-ink);
+  background-color: var(--segment-fill);
+  color: var(--segment-ink);
+}
+
+.context-window-example .context-segment[hidden] {
+  display: none;
+}
+
+.context-window-example .context-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25em;
+  color: var(--muted);
+  font-size: 0.75em;
+  line-height: 1.5;
+}
+
+.context-window-example .context-scale > span {
+  position: relative;
+  padding-top: 0.4em;
+}
+
+.context-window-example .context-scale > span::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 0.3em;
+  border-left: 1px solid var(--muted);
+  content: "";
+}
+
+.context-window-example .context-scale > span:first-child::before {
+  left: 0;
+}
+
+.context-window-example .context-scale > span:last-child::before {
+  left: auto;
+  right: 0;
+}
+
+.context-window-example .context-input {
+  --segment-ink: var(--example-input);
+  --segment-fill: var(--example-input-fill);
+}
+
+.context-window-example .context-reasoning {
+  --segment-ink: var(--example-reasoning);
+  --segment-fill: var(--example-reasoning-fill);
+}
+
+.context-window-example .context-output {
+  --segment-ink: var(--example-output);
+  --segment-fill: var(--example-output-fill);
+}
+
+.context-window-example .context-remaining,
+.context-window-example .context-free,
+.context-window-example .context-blocked {
+  --segment-ink: var(--muted);
+  --segment-fill: var(--surface);
+}
+
+.context-window-example .context-free .context-role-swatch {
+  border: 1px dotted var(--segment-ink);
+}
+
+.context-window-example .context-segment.context-blocked,
+.context-window-example .context-blocked .context-role-swatch {
+  background-color: var(--line);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 3px,
+    var(--segment-ink) 3px 4px,
+    transparent 4px 7px
+  );
+}
+
+.context-window-example .context-role-labels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1em;
+  margin: 0.8em 0 0;
+}
+
+.context-window-example .context-role {
+  min-width: 0;
+}
+
+.context-window-example .context-role-name {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  color: var(--segment-ink);
+  font-size: 0.85em;
+  font-weight: 650;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.context-window-example .context-role-swatch {
+  flex: 0 0 0.85em;
+  width: 0.85em;
+  height: 0.85em;
+  border: 1px solid var(--segment-ink);
+  background-color: var(--segment-fill);
+}
+
+.context-window-example .context-segment.context-reasoning,
+.context-window-example .context-reasoning .context-role-swatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 6px,
+    color-mix(in srgb, var(--segment-ink) 28%, transparent) 6px 7px
+  );
+}
+
+.context-window-example .context-reasoning .context-role-swatch {
+  border-style: dashed;
+}
+
+.context-window-example .context-segment.context-output,
+.context-window-example .context-output .context-role-swatch {
+  border-bottom: 4px double var(--segment-ink);
+}
+
+.context-window-example .context-remaining .context-role-swatch {
+  border: 1px dotted var(--segment-ink);
+}
+
+.context-window-example .context-role-count {
+  margin: 0.3em 0 0;
+  font-size: 0.95em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.context-window-example .context-role-detail {
+  margin: 0.3em 0 0;
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.context-window-example .context-generation {
+  margin-top: 1.4em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--line);
+}
+
+.context-window-example .context-output-constraints {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7em 1em;
+  margin: 1em 0;
+}
+
+.context-window-example .context-output-limit {
+  min-width: 0;
+  padding: 0.65em 0.8em;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  font-size: 0.8em;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.context-window-example .context-limit-value {
+  margin: 0.25em 0 0;
+  font-size: 1.2em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.context-window-example .context-effective-limit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  gap: 0.2em 1em;
+  padding-block: 0;
+  border: 0;
+  background: none;
+}
+
+.context-window-example .context-generation-bar {
+  height: 1.4em;
+}
+
+.context-window-example .context-generation-equation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5em 0.75em;
+  margin-top: 0.6em;
+  font-size: 0.85em;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.context-window-example .context-equation-term {
+  display: grid;
+  justify-content: center;
+  gap: 0.1em 0.5em;
+  color: var(--segment-ink);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.context-window-example .context-equation-value {
+  white-space: nowrap;
+}
+
+.context-window-example .context-equation-operator {
+  color: var(--muted);
+}
+
+.context-window-example .context-equation-total {
+  grid-column: 1 / -1;
+}
+
+.context-window-example .context-unused {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1em;
+  margin: 1em 0 0;
+  padding-top: 0.85em;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 600px) {
+  .context-window-example .context-role-labels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1em 1.25em;
+  }
+}
+
+@media print {
+  .context-window-example .context-scenarios,
+  .context-window-example .context-playback,
+  .context-window-example .context-scenario-panel:not(.is-active) {
+    display: none;
+  }
+
+  .context-window-example .context-scenario-summary {
+    display: block;
+  }
+
+  .context-window-example .context-window-diagram,
+  .context-window-example .context-generation {
+    break-inside: avoid;
+  }
+
+  .context-window-example .context-role-labels {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .context-window-example .context-window-bar,
+  .context-window-example .context-generation-bar,
+  .context-window-example .context-role-swatch {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .context-window-example .context-segment {
+    border-right: 1px solid var(--segment-ink);
+  }
+
+  .context-window-example .context-role-name,
+  .context-window-example .context-role-detail,
+  .context-window-example .context-output-limit,
+  .context-window-example .context-generation-equation,
+  .context-window-example .context-selected-scenario,
+  .context-window-example .context-scenario-explanation,
+  .context-window-example .context-generation-detail,
+  .context-window-example .context-budget-usage {
+    font-size: 8pt;
+  }
+}

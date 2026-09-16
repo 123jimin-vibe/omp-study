@@ -8,6 +8,10 @@ import type {
 } from '../content.ts';
 import { el, icon } from './dom.ts';
 import { highlightCode } from './syntax.ts';
+import { createExchangeExample } from './exchange-example.ts';
+import { createTokenizationExample } from './tokenization-example.ts';
+import { createContextWindowExample } from './context-window-example.ts';
+import { createResponseComparisonExample } from './response-comparison-example.ts';
 
 export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): MountedView {
   const element = el('figure', 'article-code');
@@ -92,14 +96,22 @@ export function renderArticle(
   const children: MountedView[] = [];
   const printDemos: { demo: MountedDemo; holder: HTMLElement }[] = [];
   const events = new AbortController();
+  let groupLabel: string | undefined;
 
   for (const data of sections) {
+    if (data.group) {
+      const group = el('p', 'article-group-title', data.group.title);
+      group.id = `${data.group.id}-label`;
+      groupLabel = group.id;
+      element.append(group);
+    }
     const section = el('section', 'article-section');
     const heading = el('h2', 'article-heading', data.title);
     section.id = data.id;
     heading.id = `${data.id}-heading`;
     heading.tabIndex = -1;
     section.setAttribute('aria-labelledby', heading.id);
+    if (groupLabel) section.setAttribute('aria-describedby', groupLabel);
     section.append(heading);
 
     for (const block of data.blocks) {
@@ -107,6 +119,39 @@ export function renderArticle(
         case 'paragraph':
           section.append(el('p', 'article-paragraph', block.text));
           break;
+        case 'exchange':
+          section.append(createExchangeExample(block));
+          break;
+        case 'tokenization': {
+          const child = createTokenizationExample(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
+        case 'context-window': {
+          const child = createContextWindowExample(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
+        case 'response-comparison': {
+          const child = createResponseComparisonExample(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
+        case 'references': {
+          const references = el('ul', 'article-references');
+          for (const source of block.links) {
+            const item = el('li');
+            const link = el('a', '', source.text);
+            link.href = source.href;
+            item.append(link);
+            references.append(item);
+          }
+          section.append(references);
+          break;
+        }
         case 'note': {
           const note = el('aside', 'article-note');
           const title = el('p', 'article-note-title', block.title);

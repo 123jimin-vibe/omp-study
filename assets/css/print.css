@@ -119,6 +119,12 @@
     text-decoration: none;
   }
 
+  html .topic-page .article-references a::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    overflow-wrap: anywhere;
+  }
+
   html .topic-page .topic-header {
     padding: 0 0 18pt;
   }
@@ -159,6 +165,20 @@
 
   html .topic-page .article-section + .article-section {
     margin-top: 22pt;
+  }
+
+  html .topic-page .article-group-title {
+    margin: 24pt 0 12pt;
+    padding-top: 8pt;
+    border-color: var(--ink);
+    color: var(--ink);
+    font-size: 10pt;
+    break-after: avoid;
+  }
+
+  html .topic-page .article-group-title:first-child {
+    margin-top: 0;
+    padding-top: 0;
   }
 
   html .topic-page .article-heading {
