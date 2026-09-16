@@ -47,6 +47,7 @@ function createChapterLink(topic: Topic, direction: 'prev' | 'next', label: stri
   const link = el('a', `chapter-link chapter-link-${direction}`);
   link.href = `#/topic/${encodeURIComponent(topic.id)}`;
   link.rel = direction;
+  link.setAttribute('aria-keyshortcuts', direction === 'prev' ? 'ArrowLeft' : 'ArrowRight');
   const copy = el('span', 'chapter-link-copy');
   const title = el('span', 'chapter-link-title');
   title.append(el('span', 'chapter-link-number', topic.number), document.createTextNode(` ${topic.title}`));
@@ -54,6 +55,51 @@ function createChapterLink(topic: Topic, direction: 'prev' | 'next', label: stri
   if (direction === 'prev') link.append(icon('left'), copy);
   else link.append(copy, icon('right'));
   return link;
+}
+
+function isInteractiveKeyboardTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return false;
+  return Boolean(target.closest([
+    'a', 'button', 'input', 'select', 'textarea', 'summary', 'audio', 'video',
+    '[contenteditable]:not([contenteditable="false"])',
+    '[tabindex]:not([tabindex="-1"])',
+    '[role="button"]', '[role="checkbox"]', '[role="combobox"]', '[role="link"]',
+    '[role="listbox"]', '[role="menuitem"]', '[role="option"]', '[role="radio"]',
+    '[role="slider"]', '[role="spinbutton"]', '[role="switch"]', '[role="tab"]',
+    '[role="textbox"]', '[role="treeitem"]',
+  ].join(',')));
+}
+
+function activateLink(link: HTMLAnchorElement | undefined): boolean {
+  if (!link || !link.hasAttribute('href') || link.getAttribute('aria-disabled') === 'true') return false;
+  link.click();
+  return true;
+}
+
+function bindKeyboardNavigation(
+  previous: HTMLAnchorElement | undefined,
+  next: HTMLAnchorElement | undefined,
+  moveSection: (direction: -1 | 1) => boolean,
+): AbortController {
+  const keyboard = new AbortController();
+  document.addEventListener('keydown', (event) => {
+    if (
+      event.defaultPrevented || event.isComposing
+      || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+      || isInteractiveKeyboardTarget(event.target)
+    ) return;
+
+    let navigated = false;
+    switch (event.key) {
+      case 'ArrowLeft': navigated = activateLink(previous); break;
+      case 'ArrowRight': navigated = activateLink(next); break;
+      case 'ArrowUp': navigated = moveSection(-1); break;
+      case 'ArrowDown': navigated = moveSection(1); break;
+      default: return;
+    }
+    if (navigated) event.preventDefault();
+  }, { signal: keyboard.signal });
+  return keyboard;
 }
 
 export function renderTopic(
@@ -81,8 +127,10 @@ export function renderTopic(
   const position = topics.findIndex(entry => entry.id === topic.id);
   const previous = topics[position - 1];
   const next = position >= 0 ? topics[position + 1] : undefined;
-  if (previous) navigation.append(createChapterLink(previous, 'prev', labels.previousChapter));
-  if (next) navigation.append(createChapterLink(next, 'next', labels.nextChapter));
+  const previousLink = previous ? createChapterLink(previous, 'prev', labels.previousChapter) : undefined;
+  const nextLink = next ? createChapterLink(next, 'next', labels.nextChapter) : undefined;
+  if (previousLink) navigation.append(previousLink);
+  if (nextLink) navigation.append(nextLink);
   if (navigation.childElementCount) footer.append(navigation);
   const end = el('a', 'topic-back', labels.end);
   end.href = '#/?section=contents';
@@ -90,7 +138,14 @@ export function renderTopic(
   footer.append(end);
   if (!topic.sections.length) {
     element.append(footer);
-    return { element, dispose: disposeTitle };
+    const keyboard = bindKeyboardNavigation(previousLink, nextLink, () => false);
+    return {
+      element,
+      dispose() {
+        keyboard.abort();
+        disposeTitle();
+      },
+    };
   }
 
   const layout = el('div', 'topic-layout');
@@ -122,9 +177,11 @@ export function renderTopic(
   element.append(layout, footer);
   const sectionNavigation = createSectionNavigation(topic, labels, element, indexLinks);
   element.append(sectionNavigation.element);
+  const keyboard = bindKeyboardNavigation(previousLink, nextLink, direction => sectionNavigation.move(direction));
   return {
     element,
     dispose() {
+      keyboard.abort();
       disposeTitle();
       sectionNavigation.dispose?.();
       article.dispose?.();

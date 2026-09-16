@@ -34,9 +34,20 @@ export function createToolSequenceExample(data: ToolSequenceBlock): HTMLElement 
   events.setAttribute('role', 'list');
   for (const [index, event] of data.events.entries()) {
     const row = el('li', `tool-sequence-event tool-sequence-${event.kind}`);
-    row.style.setProperty('--sequence-start', `${10 + Math.min(event.from, event.to) * 40}%`);
-    row.style.setProperty('--sequence-width', `${Math.abs(event.to - event.from) * 40}%`);
-    if (event.to < event.from) row.classList.add('tool-sequence-leftward');
+    const actorPosition = 10 + event.from * 40;
+    const eventWidth = Math.abs(event.to - event.from) * 40;
+    if (event.from === event.to) {
+      const selfEventWidth = 40;
+      const selfEventStart = Math.max(0, Math.min(100 - selfEventWidth, actorPosition - selfEventWidth / 2));
+      row.classList.add('tool-sequence-self');
+      row.style.setProperty('--sequence-start', `${selfEventStart}%`);
+      row.style.setProperty('--sequence-width', `${selfEventWidth}%`);
+      row.style.setProperty('--sequence-anchor', `${actorPosition}%`);
+    } else {
+      row.style.setProperty('--sequence-start', `${10 + Math.min(event.from, event.to) * 40}%`);
+      row.style.setProperty('--sequence-width', `${eventWidth}%`);
+      if (event.to < event.from) row.classList.add('tool-sequence-leftward');
+    }
 
     const message = el('div', 'tool-sequence-message');
     const title = el('h4', 'tool-sequence-label');

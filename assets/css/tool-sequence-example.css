@@ -214,6 +214,25 @@
       transform: rotate(-135deg);
     }
 
+    .tool-sequence-self .tool-sequence-arrow {
+      box-sizing: border-box;
+      width: 1.25rem;
+      height: 0.75rem;
+      margin-left: var(--sequence-anchor);
+      border: 1px solid currentColor;
+      border-left: 0;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+    .tool-sequence-self .tool-sequence-arrow::before { display: none; }
+
+    .tool-sequence-self .tool-sequence-arrow::after {
+      top: 0.375rem;
+      right: auto;
+      left: -0.0625rem;
+      transform: rotate(-135deg);
+    }
+
     .tool-sequence-request .tool-sequence-arrow::before { border-top-width: 2px; }
     .tool-sequence-result .tool-sequence-arrow::before { border-top-style: dashed; }
   }

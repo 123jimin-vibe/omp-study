@@ -1,17 +1,21 @@
 import type { ArticleLabels, MountedView, Topic } from '../content.ts';
 import { el, icon } from './dom.ts';
 
+export interface SectionNavigation extends MountedView {
+  move(direction: -1 | 1): boolean;
+}
+
 export function createSectionNavigation(
   topic: Topic,
   labels: ArticleLabels,
   root: HTMLElement,
   indexLinks: readonly HTMLAnchorElement[],
-): MountedView {
+): SectionNavigation {
   const element = el('nav', 'section-nav');
   element.setAttribute('aria-label', labels.sectionNavigation);
   if (!topic.sections.length) {
     element.hidden = true;
-    return { element };
+    return { element, move: () => false };
   }
 
   const heading = el('div', 'section-nav-heading');
@@ -24,8 +28,10 @@ export function createSectionNavigation(
   track.append(el('span', 'section-nav-progress'));
   const actions = el('div', 'section-nav-actions');
   const previous = el('a', 'section-nav-step');
+  previous.setAttribute('aria-keyshortcuts', 'ArrowUp');
   previous.append(icon('left'));
   const next = el('a', 'section-nav-step');
+  next.setAttribute('aria-keyshortcuts', 'ArrowDown');
   next.append(icon('right'));
   actions.append(previous, next);
   element.append(heading, current, track, actions);
@@ -40,6 +46,20 @@ export function createSectionNavigation(
   let geometryDirty = true;
   let viewportHeight = 0;
   let maxScroll = 0;
+  let requested = -1;
+  let requestedReset = 0;
+
+  function clearRequested() {
+    requested = -1;
+    if (requestedReset) window.clearTimeout(requestedReset);
+    requestedReset = 0;
+  }
+
+  function rememberRequested(index: number) {
+    clearRequested();
+    requested = index;
+    requestedReset = window.setTimeout(clearRequested, 1000);
+  }
 
   function updateStep(link: HTMLAnchorElement, index: number, label: string) {
     const section = topic.sections[index];
@@ -69,8 +89,11 @@ export function createSectionNavigation(
     updateStep(previous, index - 1, labels.previousSection);
     updateStep(next, index + 1, labels.nextSection);
     for (let linkIndex = 0; linkIndex < indexLinks.length; linkIndex += 1) {
+      indexLinks[linkIndex].removeAttribute('aria-keyshortcuts');
       if (linkIndex === index) indexLinks[linkIndex].setAttribute('aria-current', 'location');
       else indexLinks[linkIndex].removeAttribute('aria-current');
+      if (linkIndex === index - 1) indexLinks[linkIndex].setAttribute('aria-keyshortcuts', 'ArrowUp');
+      if (linkIndex === index + 1) indexLinks[linkIndex].setAttribute('aria-keyshortcuts', 'ArrowDown');
     }
   }
 
@@ -87,7 +110,9 @@ export function createSectionNavigation(
       geometryDirty = false;
     }
     if (maxScroll > 1 && scroll >= maxScroll - 2) {
-      select(topic.sections.length - 1);
+      const index = topic.sections.length - 1;
+      select(index);
+      if (requested === index) clearRequested();
       return;
     }
     const readingLine = scroll + viewportHeight * 0.25;
@@ -98,7 +123,9 @@ export function createSectionNavigation(
       if (tops[middle] <= readingLine) first = middle + 1;
       else last = middle;
     }
-    select(Math.max(0, first - 1));
+    const index = Math.max(0, first - 1);
+    select(index);
+    if (requested === index) clearRequested();
   }
 
   function schedule() {
@@ -114,15 +141,33 @@ export function createSectionNavigation(
   resize.observe(document.body);
   window.addEventListener('resize', measure, { signal: events.signal });
   window.addEventListener('scroll', schedule, { passive: true, signal: events.signal });
+  window.addEventListener('wheel', clearRequested, { passive: true, signal: events.signal });
+  window.addEventListener('touchstart', clearRequested, { passive: true, signal: events.signal });
+  window.addEventListener('pointerdown', clearRequested, { passive: true, signal: events.signal });
   select(0);
   schedule();
 
   return {
     element,
+    move(direction) {
+      // Synchronize the cached selection before resolving a keyboard command.
+      // This covers a key press between a scroll and the next animation frame.
+      if (frame) cancelAnimationFrame(frame);
+      update();
+      const targetIndex = (requested >= 0 ? requested : selected) + direction;
+      const target = indexLinks[targetIndex];
+      if (!target) return false;
+      // Update immediately so rapid repeated keys advance before smooth scrolling settles.
+      rememberRequested(targetIndex);
+      select(targetIndex);
+      target.click();
+      return true;
+    },
     dispose() {
       events.abort();
       resize.disconnect();
       cancelAnimationFrame(frame);
+      clearRequested();
     },
   };
 }
