@@ -1,0 +1,31 @@
+.transcript-caption { margin: -0.65rem 0 1.25rem; color: var(--muted); font-size: 0.8rem; }
+.transcript-prompt { margin-left: 2rem; padding: 1rem 1.25rem; border-radius: 0.75rem 0.75rem 0 0.75rem; background: var(--example-input-fill); border: 1px solid var(--line); }
+.transcript-label { margin-bottom: 0.4rem; color: var(--muted); font-size: 0.75rem; font-weight: 650; }
+.transcript-prompt .transcript-label { color: var(--example-input); }
+.transcript-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1.25rem 0; }
+.transcript-status { flex: 1 0 100%; order: -1; color: var(--muted); font-size: 0.8rem; }
+.transcript-steps { margin: 0; padding: 0; list-style: none; }
+.transcript-step { position: relative; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0.75rem; padding-bottom: 1rem; }
+.transcript-step:last-child { padding-bottom: 0; }
+.transcript-step::before { content: ''; position: absolute; top: 1.5rem; bottom: 0; left: 0.7rem; border-left: 1px solid var(--line); }
+.transcript-step:last-child::before { display: none; }
+.transcript-number { z-index: 1; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--muted); font: 0.7rem var(--font-mono); }
+.transcript-card { min-width: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 0.5rem; }
+.transcript-step[aria-current] .transcript-card { border-color: var(--example-output); }
+.transcript-step[aria-current] .transcript-number { border-color: var(--example-output); color: var(--example-output); }
+.transcript-title { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.transcript-code { margin: 0.875rem 0 0; padding: 0.875rem; background: var(--paper); border-radius: 0.25rem; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; font: 0.75rem/1.8 var(--font-mono); }
+.task-transcript .transcript-code .article-code-source { white-space: pre-wrap; overflow-wrap: anywhere; }
+.transcript-diff-added { color: var(--example-output); background: var(--example-output-fill); }
+.transcript-diff-removed { color: var(--example-reasoning); background: var(--example-reasoning-fill); }
+@media screen {
+  .transcript-step[data-visible='false'] { display: none; }
+}
+@media print {
+  html .task-transcript { break-inside: auto; }
+  .transcript-controls { display: none; }
+  .transcript-step { break-inside: avoid; }
+  .transcript-prompt { break-inside: avoid; }
+  .transcript-code { font-size: 8pt; }
+  .transcript-diff-added, .transcript-diff-removed { color: var(--ink); background: none; }
+}

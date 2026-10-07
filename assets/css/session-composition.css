@@ -1,0 +1,58 @@
+.session-composition .session-composition-caller {
+  margin: 1.25rem 0 0;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  text-align: center;
+  font-weight: 600;
+}
+.session-composition-connections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  font-size: 0.8125rem;
+}
+.session-composition-connections p {
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.session-composition-arrow {
+  display: block;
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+.session-composition-boundary {
+  border: 2px solid var(--accent);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.session-composition-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+}
+.session-composition-parts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  font-size: 0.8125rem;
+}
+.session-composition-parts > div {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  break-inside: avoid;
+}
+.session-composition-parts > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.session-composition-parts dt { font-weight: 650; }
+.session-composition-parts dd { margin: 0.35rem 0 0; }
+@media (max-width: 560px) {
+  .session-composition-parts { grid-template-columns: minmax(0, 1fr); }
+}
+@media print {
+  .session-composition { break-inside: avoid; }
+  .session-composition-parts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

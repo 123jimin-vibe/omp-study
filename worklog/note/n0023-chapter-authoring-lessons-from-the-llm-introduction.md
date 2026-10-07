@@ -57,7 +57,47 @@ real mechanism. Then verify that every sentence answers one of four questions:
 **who acts, what changes, why another step follows, or what the harness must
 preserve**.
 
+## Topic depth and connections across chapters
+
+The user's t0032 feedback identified an implementation-first bias in chapters
+05–38. Chapter 19 made the omission concrete: naming `browser`, `computer` and
+Tern did not explain what developers could do, the main API operations, how a
+call reaches the browser or operating system, or what an accessibility tree is.
+
+- Explain the subject and the practical problem before introducing Pi/OMP's
+  classes and packages. Carry that explanation into later sections; a new opening
+  paragraph cannot make an implementation inventory into a lesson.
+- For a programmable capability, select the operations needed for a coherent
+  example, show their arguments and results, and explain the execution boundary.
+  A complete reference manual is unnecessary, but names alone are insufficient.
+- Define supporting concepts where they become necessary. In the GUI chapter,
+  compare the DOM, accessibility tree and screenshot before relying on those
+  representations to explain element selection and result verification.
+- Choose visuals around an observable question: which branch is resumed, which
+  information survives compaction, when a service is ready, or how a short result
+  leads back to a stored log. Reuse an existing example when it already exposes
+  the distinction instead of adding another diagram with the same labels.
+- Link to shared mechanisms at the point of use. A chapter using `xd://` should
+  connect to internal URLs; one using `browser` should connect to Eval. Say why
+  the connection matters, and use the current route and chapter title. Sources,
+  contextual links and previous/next navigation serve different purposes.
+- Re-read the expanded lesson in Korean. Check that new definitions reduce the
+  reader's inference work, and that added paragraphs do not merely repeat the
+  implementation paragraph immediately after them.
+
 ## Analysis of the recurring pattern
+
+t0033 exposed omissions even after concept paragraphs had been added. For each
+section, identify the caller (user, model, harness or external service), trigger,
+input, effect, owner and lifetime of state. Name the concrete source locations
+when teaching discovery; show containment when teaching a runtime object. Expand
+technical terms before a diagram relies on them, and make scenario labels match
+the actual decision condition (for example replay-safe partial output, not simply
+“no output”). Explain policy layers with a concrete reason to need them. Distinguish
+model-requested questions from harness-requested approval, and session-local state
+from project-shared files. A section may need these clarifications even when its
+opening definition is correct. Audit the entire lesson, not the number of new
+paragraphs or successful checks.
 
 **[INFERENCE] The recurring gap was instructional judgment, not merely missing
 facts or components.** Early versions contained relevant terminology and passed
@@ -162,7 +202,8 @@ than adding a caption that claims it is useful.
   Useful entry points are `src/content.ts`, `src/locales/ko/topic.ts`, and
   `src/components/article.ts`.
 - Use the existing inline-text renderer in `src/components/inline-text.ts` for
-  backtick-delimited code spans. Preserve literal text safely; do not introduce
+  backtick-delimited code spans and `[label](#/topic/route-id)` chapter links.
+  Preserve literal text safely; do not introduce
   HTML-bearing prose or break code-block copying to style identifiers.
 - Preserve separate category/chapter numbering, catalogue order, shared
   previous/next links across categories, and section navigation. Do not duplicate

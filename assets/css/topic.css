@@ -202,6 +202,12 @@
   overflow-wrap: anywhere;
 }
 
+.article-inline-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .topic-page .article-references {
   margin: 1.25rem 0 0;
   padding-left: 1.25rem;

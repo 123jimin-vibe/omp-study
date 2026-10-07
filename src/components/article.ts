@@ -15,6 +15,8 @@ import { createContextWindowExample } from './context-window-example.ts';
 import { createResponseComparisonExample } from './response-comparison-example.ts';
 import { createConversationHistoryExample } from './conversation-history-example.ts';
 import { createToolSequenceExample } from './tool-sequence-example.ts';
+import { createTaskTranscript } from './task-transcript.ts';
+import { createSessionComposition } from './session-composition.ts';
 import { createSessionTree, createCompactionBudget } from './context-examples.ts';
 import { createExecutionPathExample } from './execution-path-example.ts';
 
@@ -122,6 +124,16 @@ export function renderArticle(
 
     for (const block of data.blocks) {
       switch (block.kind) {
+        case 'session-composition': {
+          section.append(createSessionComposition(block).element);
+          break;
+        }
+        case 'task-transcript': {
+          const child = createTaskTranscript(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
         case 'session-tree':
         case 'compaction-budget': {
           const child = block.kind === 'session-tree' ? createSessionTree(block) : createCompactionBudget(block);

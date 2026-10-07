@@ -6,6 +6,29 @@ export type SubheadingBlock = { kind: 'subheading'; id: string; title: string };
 export type NoteBlock = { kind: 'note'; title: string; text: string };
 export type CodeBlock = { kind: 'code'; language: string; caption: string; code: string };
 export type DemoBlock = { kind: 'demo'; demo: string };
+export interface SessionCompositionBlock {
+  kind: 'session-composition';
+  title: string;
+  caller: string;
+  request: string;
+  events: string;
+  session: string;
+  parts: readonly { label: string; detail: string }[];
+}
+
+export interface TaskTranscriptBlock {
+  kind: 'task-transcript';
+  title: string;
+  caption: string;
+  prompt: { label: string; text: string };
+  steps: readonly {
+    label: string;
+    title: string;
+    text: string;
+    code?: { language: string; source: string };
+  }[];
+  controls: { previous: string; next: string; all: string; step: string };
+}
 export type ReferencesBlock = { kind: 'references'; links: readonly { text: string; href: string }[] };
 export interface TableBlock {
   kind: 'table';
@@ -146,7 +169,7 @@ export interface CompactionBudgetBlock {
   after: readonly { label: string; tokens: number }[];
 }
 
-export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock | TableBlock
+export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock | TableBlock | TaskTranscriptBlock | SessionCompositionBlock
   | ExchangeBlock | TokenizationBlock | ContextWindowBlock | ResponseComparisonBlock
   | ConversationHistoryBlock | ToolSequenceBlock | ExecutionPathBlock | SessionTreeBlock | CompactionBudgetBlock;
 
