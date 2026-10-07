@@ -1,10 +1,11 @@
-import type { ToolSequenceBlock } from '../content.ts';
+import type { ToolSequenceBlock, MountedView } from '../content.ts';
 import { el } from './dom.ts';
 import { appendInlineText } from './inline-text.ts';
 
 let sequenceCount = 0;
 
-export function createToolSequenceExample(data: ToolSequenceBlock): HTMLElement {
+export function createToolSequenceExample(data: ToolSequenceBlock): MountedView {
+  const listeners = new AbortController();
   const figure = el('figure', 'learning-figure tool-sequence-example');
   const heading = el('h3', 'learning-figure-heading');
   heading.id = `tool-sequence-${++sequenceCount}`;
@@ -76,5 +77,32 @@ export function createToolSequenceExample(data: ToolSequenceBlock): HTMLElement 
   }
   timeline.append(lifelines, events);
   figure.append(heading, prompt, actors, timeline);
-  return figure;
+  if (data.controls) {
+    const labels = data.controls;
+    const controls = el('div', 'example-controls sequence-controls');
+    const previous = el('button', 'button', labels.previous);
+    const next = el('button', 'button', labels.next);
+    const all = el('button', 'button', labels.all);
+    const status = el('span', 'sequence-status');
+    status.setAttribute('role', 'status');
+    const rows = Array.from(events.children) as HTMLElement[];
+    let current = 0;
+    function show(index: number) {
+      current = index;
+      for (const [i, row] of rows.entries()) row.dataset.active = String(index < 0 || i === index);
+      previous.disabled = index === 0;
+      next.disabled = index === rows.length - 1;
+      all.setAttribute('aria-pressed', String(index < 0));
+      status.textContent = index < 0 ? labels.all : `${labels.step} ${index + 1} / ${rows.length}`;
+    }
+    previous.addEventListener('click', () => show(current < 0 ? 0 : Math.max(0, current - 1)), { signal: listeners.signal });
+    next.addEventListener('click', () => show(current < 0 ? 0 : Math.min(rows.length - 1, current + 1)), { signal: listeners.signal });
+    all.addEventListener('click', () => show(current < 0 ? 0 : -1), { signal: listeners.signal });
+    for (const button of [previous, next, all]) button.type = 'button';
+    controls.append(previous, status, next, all);
+    figure.insertBefore(controls, actors);
+    figure.classList.add('sequence-interactive');
+    show(0);
+  }
+  return { element: figure, dispose: () => listeners.abort() };
 }

@@ -15,6 +15,7 @@ import { createContextWindowExample } from './context-window-example.ts';
 import { createResponseComparisonExample } from './response-comparison-example.ts';
 import { createConversationHistoryExample } from './conversation-history-example.ts';
 import { createToolSequenceExample } from './tool-sequence-example.ts';
+import { createSessionTree, createCompactionBudget } from './context-examples.ts';
 import { createExecutionPathExample } from './execution-path-example.ts';
 
 export function renderCodeBlock(block: CodeBlock, labels: ArticleLabels): MountedView {
@@ -121,6 +122,43 @@ export function renderArticle(
 
     for (const block of data.blocks) {
       switch (block.kind) {
+        case 'session-tree':
+        case 'compaction-budget': {
+          const child = block.kind === 'session-tree' ? createSessionTree(block) : createCompactionBudget(block);
+          children.push(child);
+          section.append(child.element);
+          break;
+        }
+        case 'table': {
+          const wrapper = el('div', 'article-table-wrap');
+          const table = el('table', 'article-table');
+          const caption = el('caption');
+          appendInlineText(caption, block.title);
+          const head = el('thead');
+          const header = el('tr');
+          for (const column of block.columns) {
+            const cell = el('th');
+            cell.scope = 'col';
+            appendInlineText(cell, column);
+            header.append(cell);
+          }
+          head.append(header);
+          const body = el('tbody');
+          for (const values of block.rows) {
+            const row = el('tr');
+            for (const [index, value] of values.entries()) {
+              const cell = index === 0 ? el('th') : el('td');
+              if (cell instanceof HTMLTableCellElement && index === 0) cell.scope = 'row';
+              appendInlineText(cell, value);
+              row.append(cell);
+            }
+            body.append(row);
+          }
+          table.append(caption, head, body);
+          wrapper.append(table);
+          section.append(wrapper);
+          break;
+        }
         case 'subheading': {
           const subheading = el('h3', 'article-subheading');
           subheading.id = block.id;
@@ -159,9 +197,12 @@ export function renderArticle(
         case 'conversation-history':
           section.append(createConversationHistoryExample(block));
           break;
-        case 'tool-sequence':
-          section.append(createToolSequenceExample(block));
+        case 'tool-sequence': {
+          const child = createToolSequenceExample(block);
+          children.push(child);
+          section.append(child.element);
           break;
+        }
         case 'execution-path': {
           const child = createExecutionPathExample(block);
           children.push(child);

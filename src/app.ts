@@ -70,7 +70,8 @@ function routeFromHash(hash: string): Route {
   const href = !hash || hash === '#' ? '#/' : hash;
   const [path, query] = href.slice(1).split('?');
   const section = new URLSearchParams(query).get('section');
-  const topic = locale.topics.find((entry) => path === `/topic/${encodeURIComponent(entry.id)}`);
+  const alias = Object.entries(locale.topicAliases ?? {}).find(([id]) => path === `/topic/${encodeURIComponent(id)}`)?.[1];
+  const topic = locale.topics.find((entry) => alias === entry.id || path === `/topic/${encodeURIComponent(entry.id)}`);
   return topic ? { view: 'topic', topic, href, section }
     : { view: path === '/' ? 'home' : 'missing', href, section };
 }

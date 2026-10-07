@@ -41,6 +41,18 @@ const ko: Locale = {
     light: '밝은 화면으로 전환',
     dark: '어두운 화면으로 전환',
   },
+  topicAliases: {
+    'managed-processes': 'background-jobs',
+    'response-streaming': 'model-providers',
+    'checkpoints-and-rewind': 'session-storage-and-resume',
+    'task-tracking': 'goals',
+    'agent-communication': 'subagents',
+    'benchmarks': 'usage-statistics',
+    'native-modules': 'file-reading-and-search',
+    'bitmap-context-compression': 'context-compaction',
+    'live-collaboration': 'sdk-rpc-and-acp-interfaces',
+    'desktop-automation': 'browser-automation',
+  },
   topics,
   topicGroups,
 };

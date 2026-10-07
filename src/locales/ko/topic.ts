@@ -6,6 +6,7 @@ import { messagesAndToolsTopic } from './messages-and-tools.ts';
 import { codingAgentsAndOmpTopic } from './coding-agents-and-omp.ts';
 import { sessionRuntimeTopic } from './session-runtime.ts';
 import { projectInstructionsAndPromptAssemblyTopic } from './project-instructions-and-prompt-assembly.ts';
+import { turnRecoveryTopic } from './turn-recovery-and-steering.ts';
 import { agentLoopTopic } from './agent-loop.ts';
 import { toolDefinitionsAndRegistryTopic } from './tool-definitions-and-registry.ts';
 import { toolPermissionsTopic } from './tool-permissions.ts';
@@ -21,7 +22,7 @@ import {
   workflowAndAgentCoordinationTopics,
 } from './chapters-33-46.ts';
 
-export const topicGroups: readonly TopicGroup[] = [
+const catalogue: readonly TopicGroup[] = [
   {
     id: 'llm-fundamentals',
     number: 'I',
@@ -197,9 +198,10 @@ export const topicGroups: readonly TopicGroup[] = [
     title: '핵심 런타임',
     topics: [
       codingAgentsAndOmpTopic,
+      agentLoopTopic,
       sessionRuntimeTopic,
       projectInstructionsAndPromptAssemblyTopic,
-      agentLoopTopic,
+      turnRecoveryTopic,
       toolDefinitionsAndRegistryTopic,
       toolPermissionsTopic,
     ],
@@ -237,16 +239,19 @@ export const topicGroups: readonly TopicGroup[] = [
   {
     id: 'interfaces-and-infrastructure',
     number: 'VIII',
-    title: '인터페이스와 지원 시스템',
+    title: '인터페이스',
     topics: interfacesAndInfrastructureTopics,
   },
   {
     id: 'specialized-components',
     number: 'IX',
-    title: '전문 구성 요소',
+    title: '측정과 사례',
     topics: specializedComponentTopics,
   },
 ];
+
+let chapterNumber = 0;
+export const topicGroups: readonly TopicGroup[] = catalogue.map(group => ({ ...group, topics: group.topics.map(topic => ({ ...topic, number: String(++chapterNumber).padStart(2, '0') })) }));
 
 export const topics: readonly Topic[] = topicGroups.flatMap(group => group.topics);
 

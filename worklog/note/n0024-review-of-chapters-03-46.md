@@ -5,6 +5,15 @@ title = "Review of chapters 03-46"
 
 # Review of chapters 03-46
 
+## Application record · 2026-10-07
+
+The user requested validation and application of this note. See n0026 for the
+accepted changes, qualifications and evidence, and t0029 for execution. The
+review below is preserved as historical input; its original approval warning
+is satisfied for this scoped application.
+
+## Original review
+
 Findings from t0028. The review covers every chapter marked `검토 전` (03–46) at
 commit `35faa73`. omp was compared at two commits: the snapshot the chapters
 cite (`3b3a6dc9`, 2026-09-10) and upstream HEAD `3f000c52` (2026-10-06), which

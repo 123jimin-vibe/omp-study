@@ -5,6 +5,15 @@ title = "Line-level findings for chapters 03-46"
 
 # Line-level findings for chapters 03-46
 
+## Application record · 2026-10-07
+
+The user requested validation and application of this note. See n0026 for the
+accepted changes, qualifications and evidence, and t0029 for execution. The
+review below is preserved as historical input; its original approval warning
+is satisfied for this scoped application.
+
+## Original review
+
 Appendix to n0024. Raw per-chapter findings from the t0028 review: seven editorial
 reviewers (one per chapter range) and one rendered-surface reviewer. Line numbers refer
 to the locale files at commit `35faa73`. Findings are reviewer output; only the items

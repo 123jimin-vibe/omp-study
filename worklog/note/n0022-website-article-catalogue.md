@@ -7,157 +7,118 @@ title = "Website article catalogue"
 
 ## Purpose and scope
 
-A component-based article catalogue for the website, based on t0009 and the independently reviewed revision in t0010.
+The current 38-chapter catalogue applies the user-requested n0024/n0025 review
+through t0029. n0026 records validation, qualifications, and the old-to-new map.
+Nine groups remain; chapter numbering is continuous across them.
 
-- Begin with a short, skimmable introduction to LLMs, limited to concepts relevant to end-users.
-- Use direct subject titles, substantive scopes, and explicit ties to components.
-- Treat the sections as component groups, not a requirement to read every article in sequence.
-- Component organization does not exclude cross-cutting model/provider behavior. Include caching, variability, and other constraints wherever they materially affect the harness design being taught, even without a dedicated OMP module.
-- The titles below are English working titles; website publication remains Korean-first under s0004.
-- For authoring guidance derived from chapter 01's revisions, see n0023.
-- This is a planning note, not completed articles or a change to the website specifications.
+- Begin with the two reviewed LLM/interface introductions.
+- Use Korean subject titles and concrete examples, with public pinned OMP sources.
+- Teach component responsibilities and consequential behavior, not package inventories.
+- Include caching, variability, and provider constraints where they affect design.
+- Groups support browsing; articles need not be read strictly in sequence.
+- Preserve retained route IDs; merged chapter URLs resolve to their receiving chapter.
+- Only chapters 01 and 02 are human-reviewed. Agent revision does not clear badges.
+- s0001–s0005 govern the product. This catalogue describes the approved chapter scope;
+  n0023 remains authoring guidance.
 
-The catalogue first combined the reviewed introduction articles into chapter 1. The user subsequently requested merging messages/prompts and function calling into chapter 2, “메시지와 도구 호출”. The current catalogue has 46 articles; later articles retain their scopes and are renumbered continuously.
+## Source scope
 
-## LLM fundamentals
+OMP examples in chapters 03–38 refer to revision
+`3f000c524cf82279f804ffd7526280cc9a5f25fe`, not an unpinned latest release.
+Illustrative data and simplified protocols are labeled in the articles.
 
-These articles introduce the model and its interface before discussing OMP. They require background sources beyond t0009.
+## I · LLM 기초
 
 | # | Article | Scope |
 | --- | --- | --- |
-| 1 | **Large language models** | A brief introduction: input and generated output; tokenization; context, reasoning, and output budgets; prompt/token caching and its effect on request layout, cost, and latency. Organize response variability and factual reliability separately from these mechanics, and connect them to harness validation and evaluation using meaningful examples. Keep it skimmable. Omit model architecture, training procedures, and generation mathematics. |
-| 2 | **Messages and tool calling** | Conversation roles, text and image content, chat formatting, and request history; function definitions, parameter schemas, generated arguments, application-side execution, and correlated result return. Follow a file-reading function through the complete exchange. Identify provider-specific formats, introduce function/tool calling terminology, and connect message assembly and tool execution to harness design. |
+| 01 | **대규모 언어 모델** (`large-language-models`) | 입력에서 출력으로; 길이를 세는 단위, 토큰; 읽는 한도와 쓰는 한도; 반복해서 읽는 입력, 프롬프트 캐싱; 같은 질문, 다른 답변; 유창한 답변도 확인하기. |
+| 02 | **메시지와 도구 호출** (`messages-and-prompts`) | 질문을 요청으로 구성하기; 한 메시지 안의 텍스트와 이미지; 메시지가 모델의 입력이 되는 형식; 이전 대화도 이번 입력에 포함하기; 파일 읽기에서 최종 답변까지; 하네스가 보존하고 통제할 것. |
 
-Background sources include Hugging Face's [text generation](https://huggingface.co/docs/transformers/llm_tutorial), [tokenization](https://huggingface.co/learn/llm-course/en/chapter2/4), and [chat formatting](https://huggingface.co/docs/transformers/chat_templating) documentation, and OpenAI's [function-calling guide](https://developers.openai.com/api/docs/guides/function-calling). These are source material to select from, not a requirement to teach their full technical depth.
+## II · 핵심 런타임
 
-## Core runtime
+| # | Article | Scope |
+| --- | --- | --- |
+| 03 | **코딩 에이전트와 OMP** (`coding-agents-and-omp`) | 읽고 고치고 확인하는 작업; Pi와 OMP의 패키지 구성. |
+| 04 | **에이전트 루프** (`agent-loop`) | 한 호출이 다음 요청으로 이어지기; 같은 편집 호출의 세 가지 결과; 한 응답 안의 동시 실행과 순차 실행; 계속 실행하거나 멈추는 조건. |
+| 05 | **세션 런타임** (`session-runtime`) | createAgentSession으로 세션 만들기; 이벤트로 진행 상황 받기; 작업 중단과 세션 종료. |
+| 06 | **프로젝트 지침과 프롬프트 구성** (`project-instructions-and-prompt-assembly`) | 지침 파일 고르기; AGENTS.md의 문장이 요청에 들어가기; 규칙을 읽거나 자동으로 넣는 시점; 재사용할 접두부를 안정적으로 유지하기. |
+| 07 | **실행 복구와 개입** (`turn-recovery-and-steering`) | 실패를 분류하고 다시 시도하기; 하네스가 추가하는 메시지. |
+| 08 | **도구 정의와 레지스트리** (`tool-definitions-and-registry`) | 한 도구의 설명과 실행 함수; 등록·활성화·노출되는 도구; 같은 상대 경로가 다른 파일을 읽는 이유. |
+| 09 | **도구 권한** (`tool-permissions`) | 기본 승인 모드와 명시적 정책; 명령 규칙과 추가 차단; 빠진 정보를 사용자에게 묻기; 정책이 검사하는 범위. |
 
-Introduce the overall application, then the components responsible for running it.
+## III · 도구와 실행
 
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 3 | **Coding agents and OMP** | Overall architecture | Follow a read–edit–run task through the model, loop, tools, session, and UI. Introduce the Pi and OMP package maps. |
-| 4 | **Session runtime** | `AgentSession`, `createAgentSession` | Component construction, active model and tools, prompt/context preparation, event subscriptions, and session lifecycle. |
-| 5 | **Project instructions and prompt assembly** | Context-file loader, rulebook, system-prompt assembly | Loading project instructions, matching rules, and constructing the system prompt. Trace one project instruction into an outgoing request. |
-| 6 | **Agent loop** | `packages/agent` | Model calls, tool validation and execution, sequential/concurrent scheduling, result messages, continuation, termination, cancellation, and queued input. |
-| 7 | **Tool definitions and registry** | Coding-agent tool registry and tool-session contract | Tool names, descriptions, schemas, registered implementations, availability, and access to working-directory and session services. |
-| 8 | **Tool permissions** | Approval and interception policies | Allow/prompt/deny decisions, matching rules, enforcement locations, and coverage limits. Trace a denied invocation; explain separately what process isolation would require. |
+| # | Article | Scope |
+| --- | --- | --- |
+| 10 | **파일 읽기와 검색** (`file-reading-and-search`) | 아는 단서에서 조사 시작하기; 요약과 원문 범위 읽기; 검색 구현으로 이어지는 호출. |
+| 11 | **파일 편집** (`file-editing`) | 전체 쓰기와 부분 편집; 읽은 스냅샷에 맞춰 수정하기; 생성 중 미리 보기와 적용 결과. |
+| 12 | **셸 실행** (`shell-execution`) | 명령과 실행 조건; 잘린 출력과 종료 이유. |
+| 13 | **백그라운드 작업과 서비스** (`background-jobs`) | 끝이 있는 작업 맡기기; 이름으로 관리하는 개발 서버. |
+| 14 | **Python과 JavaScript 실행** (`python-and-javascript-execution`) | 두 번째 셀에서 변수 이어 쓰기; 셀에서 도구와 에이전트 부르기. |
+| 15 | **AST 검색과 편집** (`ast-search-and-editing`) | 문자열과 구문을 구별하기; 제안 뒤 현재 파일에 적용하기. |
+| 16 | **언어 서버** (`language-servers`) | 파일에 맞는 서버 연결하기; 미리 보기와 파일 변경; 이번 문서의 진단 받기. |
+| 17 | **디버거** (`debuggers`) | 디버그 어댑터 연결하기; 멈춘 위치와 변수 참조. |
+| 18 | **웹 검색과 문서 가져오기** (`web-search-and-document-retrieval`) | 검색 결과에서 원문으로; 검색 조건과 실패 처리. |
+| 19 | **GUI 자동화** (`browser-automation`) | 브라우저 탭 열기; 요소를 찾고 조작한 뒤 확인하기; 데스크톱 앱과 사용자 입력 공유하기. |
 
-**Research:** n0002–n0008, n0014, n0018, n0020.
+## IV · 모델 연동
 
-## Tools and execution
+| # | Article | Scope |
+| --- | --- | --- |
+| 20 | **모델 카탈로그** (`model-catalog`) | 이름을 실행 가능한 모델로 바꾸기; 역할과 추론 수준. |
+| 21 | **모델 제공자와 스트리밍** (`model-providers`) | 요청과 대화 기록 변환하기; 엔드포인트가 지원하는 도구 형식; 부분 응답에서 완성된 메시지로; 텍스트 속 도구 호출 읽기. |
+| 22 | **인증과 자격 증명** (`authentication-and-credentials`) | 요청에 사용할 계정 고르기; 갱신 토큰 보관과 대화 속 비밀 처리. |
 
-The basic coding tools come first. More specialized execution and analysis components follow.
+## V · 컨텍스트와 저장
 
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 9 | **File reading and search** | `read`, `grep`, `glob` | File discovery, text search, scoped reads, ignore rules, and result formatting. Follow the lookup of a relevant source file. |
-| 10 | **File editing** | `write`, `edit`, native edit/diff implementation | File creation, exact-text and anchored edits, validation, previews, application, and mutation tracking. |
-| 11 | **Shell execution** | `bash`, shell and PTY backends | Working directory, environment, output capture, exit status, timeouts, cancellation, interactive terminals, and background-job integration. |
-| 12 | **Background jobs** | Job manager | Submission of finite work, ownership, completion delivery, result retrieval, and cancellation. Follow a background command through to its result. |
-| 13 | **Managed processes** | Process broker | Service startup, readiness, logs, input, restart, and shutdown. Use a development server as the running example. |
-| 14 | **Python and JavaScript execution** | `eval` and notebook runtimes | Persistent kernels, retained variables, result capture, resets, and calling harness tools from executed code. |
-| 15 | **AST search and editing** | `ast_grep`, `ast_edit`, `pi-ast` | Syntax trees, structural patterns, captures, and transformations. Cover the supported syntax and limits of structural matching. |
-| 16 | **Language servers** | LSP integration | Server lifecycle, symbols, references, rename, code actions, diagnostics, and association of diagnostics with document versions. |
-| 17 | **Debuggers** | DAP integration | Adapter setup, launch and attach, breakpoints, stepping, stack frames, and variable inspection. Follow a failing program into a debugger. |
-| 18 | **Web search and document retrieval** | `web_search`, URL readers | Search requests and results, fetching pages, content extraction, and source references returned to the model. |
-| 19 | **Browser automation** | Browser integration, `browser-relay` | Browser sessions, DOM inspection, screenshots, interactions, authenticated tabs, and attachment to an existing browser. |
+| # | Article | Scope |
+| --- | --- | --- |
+| 23 | **세션 저장과 재개** (`session-storage-and-resume`) | 저장된 트리와 다음 요청; 완료된 메시지 저장과 재개; 탐색 분기를 보고서로 접기. |
+| 24 | **컨텍스트 압축** (`context-compaction`) | 압축이 시작되는 때; 사용할 수 있는 압축 방식 고르기; 요약 없이 줄이는 결과; 기록을 이미지로 바꾸는 SnapCompact. |
+| 25 | **아티팩트와 내부 URL** (`artifacts-and-internal-urls`) | 처음에는 일부만, 필요하면 더 읽기; 주소를 담당 구현으로 보내기. |
+| 26 | **세션 간 메모리** (`cross-session-memory`) | 무엇을 언제 저장하는가; 새 요청에 관련 지식 넣기. |
 
-**Research:** n0010, n0015–n0017, n0019, n0021.
+## VI · 설정과 확장
 
-## Model access
+| # | Article | Scope |
+| --- | --- | --- |
+| 27 | **설정과 리소스 탐색** (`settings-and-resource-discovery`) | 최종 설정값의 출처; 기능별로 찾고 활성화하기. |
+| 28 | **스킬과 프롬프트 템플릿** (`skills-and-prompt-templates`) | 목록에서 필요한 본문 읽기; 명령 인자를 요청 문장으로 펼치기. |
+| 29 | **확장 기능과 플러그인** (`extensions-and-plugins`) | 도구와 이벤트 처리기 등록하기; 묶어서 설치하고 다시 로드하기. |
+| 30 | **MCP 연동** (`mcp-integration`) | 서버를 연결하고 도구 발견하기; 원격 호출과 재연결. |
 
-These articles examine the implementation behind the model interface introduced in the fundamentals.
+## VII · 작업 흐름과 에이전트 조정
 
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 20 | **Model providers** | `packages/ai` provider adapters and conversion utilities | Internal message representations, provider request/response conversion, schema and function-call compatibility, endpoints, and provider errors. |
-| 21 | **Model catalog** | `packages/catalog`, model registry | Model identifiers, aliases, capabilities, context limits, metadata lookup, and model-role selection. |
-| 22 | **Response streaming** | Provider streams and `EventStream` | Incremental text delivery, streaming transports, buffering, function-argument deltas, completion/error events, and delivery to the agent and session. |
-| 23 | **Authentication and credentials** | Provider authentication and secrets subsystem | API keys, OAuth login and refresh, credential resolution and storage, and treatment of secrets in diagnostics and display. |
+| # | Article | Scope |
+| --- | --- | --- |
+| 31 | **계획 모드** (`plan-mode`) | 계획 파일을 검토한 뒤 실행하기; 승인한 계획을 이어받기. |
+| 32 | **목표와 작업 추적** (`goals`) | 답변이 끝나도 목표가 남으면; 목표를 작업 목록으로 나누기; 반복 실행과 모델 인계. |
+| 33 | **하위 에이전트와 통신** (`subagents`) | 조사를 나누고 결과 받기; 수명과 작업 공간 다루기. |
+| 34 | **검토 에이전트** (`advisor`) | 누가 무엇을 검토하나; 조언이 실행에 들어가는 조건. |
 
-**Research:** n0006, n0013–n0014, n0020.
+## VIII · 인터페이스
 
-## Context and persistence
+| # | Article | Scope |
+| --- | --- | --- |
+| 35 | **터미널 인터페이스** (`terminal-interface`) | 같은 도구 카드 갱신하기; 입력을 세션 동작으로 바꾸기. |
+| 36 | **SDK와 외부 인터페이스** (`sdk-rpc-and-acp-interfaces`) | 호스트에 맞는 연결 고르기; 수락·턴 종료·세션 정지 구분하기; 원격 게스트와 같은 세션 보기. |
 
-Give each stored or reconstructed form of information a separate home.
+## IX · 측정과 사례
 
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 24 | **Session storage and resume** | `SessionManager`, session storage | JSONL entries, parent links, persisted messages, branch selection, resume, and fork. Compare the saved tree with reconstructed model input. |
-| 25 | **Context compaction** | Agent/session compaction machinery | Context budgets, trigger conditions, selected history, retained messages, summaries, and recorded compaction results. |
-| 26 | **Cross-session memory** | Memory subsystem and its backends | Retention, recall, backend selection, and inclusion of retrieved information in later requests. Use Mnemopi as one backend example. |
-| 27 | **Artifacts and internal URLs** | Artifact storage and URL registries | Stored tool output, previews, references, URL handlers, and later retrieval. Show exactly which output is initially included in model context. |
-| 28 | **Checkpoints and rewind** | `checkpoint`, `rewind` | Captured, restored, and excluded filesystem/session state. Compare the working tree and conversation before and after restoration. |
+| # | Article | Scope |
+| --- | --- | --- |
+| 37 | **사용량 측정과 벤치마크** (`usage-statistics`) | 요청 비용과 지연 읽기; 하네스 변경을 같은 과제로 비교하기. |
+| 38 | **GitHub 자동화 사례** (`github-automation-service`) | 이슈를 재개 가능한 작업으로 만들기; 인증과 완료 조건을 호스트에 두기. |
 
-**Research:** n0011, n0014, n0016–n0018, n0021.
+## Consolidation decisions
 
-## Configuration and extensions
-
-Cover how the runtime finds, configures, and loads additional capabilities.
-
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 29 | **Settings and resource discovery** | `config`, `discovery`, capability registries | Configuration sources, precedence, profiles, resource discovery, and capability activation. Trace the origin of an effective setting. |
-| 30 | **Skills and prompt templates** | Skill and prompt-template loaders | Resource formats, discovery, loading, invocation, and use in constructing instructions. |
-| 31 | **Extensions and plugins** | Extension runtime and plugin loader | Registering tools, commands, providers, and event hooks; loading extensions; packaging and installing resources. |
-| 32 | **MCP integration** | MCP manager and tool bridge | Clients and servers, discovery, schema conversion, transports, invocation, reconnection, and shutdown. |
-
-**Research:** n0012, n0017, n0020.
-
-## Workflow and agent coordination
-
-Single-agent workflow controls and multi-agent facilities are distinct subjects within this group.
-
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 33 | **Plan mode** | Plan-mode subsystem | Plan documents, mode-specific policy, and integration with the running session. |
-| 34 | **Goals** | Goal subsystem and control tool | Goal representation, activation, progress checks, and interaction with session control. |
-| 35 | **Task tracking** | `todo` and task-list storage | Task entries, status changes, blocking, and how the agent reads and updates its task list. |
-| 36 | **Subagents** | `task` runtime and agent discovery | Agent definitions, model/tool selection, child sessions, supplied context, execution limits, results, and isolation options. |
-| 37 | **Agent communication** | `hub` mailboxes and agent lifecycle services | Peer addressing, messages, steering, wakeups, and completion delivery. Use the Agent Hub interface to inspect these interactions. |
-
-**Research:** n0019. Plan-mode and goal implementation details need further source tracing; t0009 primarily identifies these subsystems.
-
-## Interfaces and supporting infrastructure
-
-Separate the components that present or embed the agent from those that analyze its runs.
-
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 38 | **Terminal interface** | `packages/tui`, interactive mode | Transcript and editor components, input, focus, layout, differential rendering, and tool-result renderers. |
-| 39 | **SDK, RPC and ACP interfaces** | SDK and host adapters, `omp-rpc` | In-process embedding, process-backed control, and editor integration: entry points, commands, events, and lifecycle. |
-| 40 | **Usage statistics** | `packages/stats` | Session-log ingestion, usage and cost records, latency/error metrics, storage, and queries over completed runs. |
-| 41 | **Benchmarks** | `packages/metaharness`, edit benchmark fixtures | Experiment configuration, fixtures, correctness checks, traces, and result storage. Inspect the artifacts of an individual benchmark case. |
-
-**Research:** n0009, n0014–n0015, n0021.
-
-## Specialized components
-
-These can be separate advanced articles without becoming prerequisites for the introductory material.
-
-| # | Article | Component | Scope |
-| --- | --- | --- | --- |
-| 42 | **Native modules** | `packages/natives`, `crates/pi-*` | TypeScript/Rust bindings, platform integration, and native shell, editing, search, AST, and VCS implementations. Trace one operation across the binding. |
-| 43 | **Bitmap context compression** | `packages/snapcompact` | Conversation serialization, bitmap rendering, model requirements, and evaluation of the resulting representation. |
-| 44 | **Live collaboration** | `collab-web`, `packages/wire` | Host/guest interfaces, shared events, control and interruption, and relay communication. |
-| 45 | **Desktop automation** | `computer` and platform integration | Screenshots, pointer/keyboard actions, coordinates, and permissions for controlling a desktop. |
-| 46 | **GitHub automation service** | `python/robomp` | Webhook intake, queued issue/PR tasks, workspaces, RPC sessions, and credentialed GitHub operations. |
-
-**Research:** n0015, n0017–n0019, n0021.
-
-## Introductory reading route
-
-A reader should not need to finish the entire catalogue to understand a working coding agent:
-
-**LLM fundamentals → Coding agents and OMP → Session runtime → Project instructions and prompt assembly → Agent loop → Tool definitions and registry → Tool permissions → File reading and search → File editing → Shell execution → Session storage and resume.**
-
-Readers already familiar with LLMs may skim article 1. The specialized articles branch from this route. AST editing, LSP, subagents, and native modules are not presented as prerequisites for basic coding-agent operation.
-
-## Research and review boundaries
-
-- t0009 and n0002–n0021 provide the component research. The notes use the OMP snapshot at [`3b3a6dc9`](https://github.com/can1357/oh-my-pi/tree/3b3a6dc9bbd85102ce19d0b1c11bf6870915f6ec) and the Pi snapshot at [`d12cd92e`](https://github.com/earendil-works/pi/tree/d12cd92e45e308d4af000554292165ef1984253b). Their comparison is architectural, not a literal fork diff.
-- t0010 records the independent component audit, reader simulations, and model-tier reviews of the prior catalogue. The reader perspectives were simulations, not a user study. This note applies the subsequent user-requested merge and end-user focus to the introductory article.
-- Detailed behavior, especially compaction, restoration, permission coverage, and configuration precedence, needs source-level verification when writing the articles. Proposed examples are not claims of demonstrations already implemented or tested.
-- Published implementation claims need public source citations at the point of explanation under s0003. The research-note IDs above identify the starting evidence for drafting.
-- This note does not alter s0001–s0005 or replace the site's current placeholder content.
+- Jobs and managed services share one chapter, with separate manager/broker sections.
+- Provider streaming belongs to the provider adapter; persistence belongs to sessions.
+- Checkpoint/rewind belongs to session branching; SnapCompact belongs to compaction.
+- Goals and todos share continuation/stop semantics; their state remains distinct.
+- Peer messaging belongs to subagents; Agent Hub controls belong to the TUI.
+- Browser and desktop automation share observation/action mechanics and retain
+  their different lifetimes, coordinate rules, and user-control constraints.
+- Collaboration is another host interface. Measurement and benchmarks form one
+  comparison workflow. Native implementation belongs to search and the package map.
+- Turn recovery and advisor review are standalone additions. RoboOMP closes the guide.

@@ -7,6 +7,12 @@ export type NoteBlock = { kind: 'note'; title: string; text: string };
 export type CodeBlock = { kind: 'code'; language: string; caption: string; code: string };
 export type DemoBlock = { kind: 'demo'; demo: string };
 export type ReferencesBlock = { kind: 'references'; links: readonly { text: string; href: string }[] };
+export interface TableBlock {
+  kind: 'table';
+  title: string;
+  columns: readonly string[];
+  rows: readonly (readonly string[])[];
+}
 export interface ExchangeBlock {
   kind: 'exchange';
   input: { label: string; text: string };
@@ -99,13 +105,14 @@ export interface ToolSequenceBlock {
   kind: 'tool-sequence';
   title: string;
   prompt: string;
+  controls?: { previous: string; next: string; all: string; step: string };
   actors: readonly [string, string, string];
   events: readonly {
     from: 0 | 1 | 2;
     to: 0 | 1 | 2;
     label: string;
     detail: string;
-    kind: 'request' | 'call' | 'read' | 'result' | 'answer';
+    kind: 'request' | 'call' | 'read' | 'result' | 'answer' | 'process' | 'event';
     correlation?: string;
   }[];
 }
@@ -126,9 +133,22 @@ export interface ExecutionPathBlock {
   }[];
 }
 
-export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock
+export interface SessionTreeBlock {
+  kind: 'session-tree'; title: string;
+  labels: { choose: string; input: string; saved: string; print: string };
+  nodes: readonly { id: string; parent: string | null; text: string }[];
+  branches: readonly string[];
+}
+export interface CompactionBudgetBlock {
+  kind: 'compaction-budget'; title: string; capacity: number; threshold: number;
+  labels: { before: string; after: string; free: string; tokens: string; choose: string; note: string };
+  before: readonly { label: string; tokens: number }[];
+  after: readonly { label: string; tokens: number }[];
+}
+
+export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock | TableBlock
   | ExchangeBlock | TokenizationBlock | ContextWindowBlock | ResponseComparisonBlock
-  | ConversationHistoryBlock | ToolSequenceBlock | ExecutionPathBlock;
+  | ConversationHistoryBlock | ToolSequenceBlock | ExecutionPathBlock | SessionTreeBlock | CompactionBudgetBlock;
 
 export interface ContentSection {
   id: string;
@@ -218,6 +238,7 @@ export interface Locale {
   article: ArticleLabels;
   reading: ReadingLabels;
   theme: ThemeLabels;
+  topicAliases?: Readonly<Record<string, string>>;
   topics: readonly Topic[];
   topicGroups: readonly TopicGroup[];
 }
