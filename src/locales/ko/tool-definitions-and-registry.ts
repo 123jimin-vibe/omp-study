@@ -16,7 +16,7 @@ export const toolDefinitionsAndRegistryTopic = topic('tool-definitions-and-regis
     p("OMP는 모델에게 알려 줄 도구 이름·설명·인자 스키마와 실행 함수를 `AgentTool` 하나에 담습니다. 모델이 `read`를 호출하면 루프는 이름이 같은 도구를 찾아 `path` 등의 인자를 넘깁니다."),
     code('ReadTool의 path 필드', 'typescript', 'path: Type.String({\n  description: "Local path, internal URI, or URL; selectors inline."\n})'),
     table('실행에 영향을 주는 필드', ['필드', '역할'], [['`execute`', '검증한 인자로 연산 실행'], ['`concurrency`', 'shared 또는 exclusive 스케줄링'], ['`interruptible`', '새 입력이 왔을 때 중단 가능 여부'], ['`openArgStream`', '아직 생성 중인 인자를 받아보기'], ['`lenientArgValidation`', '스키마에 맞지 않는 인자도 도구에 넘길지 결정'], ['`loadMode`', '도구 설명을 미리 보낼지, 필요할 때 읽게 할지 결정']]),
-    p('OMP는 스키마를 모델 API에 맞게 바꿔 전송합니다. 호출 의도 추적을 켜면 하네스가 도구 스키마에 짧은 설명용 `i` 필드를 추가하고, 모델이 “왜 이 도구를 쓰는지”를 적습니다. 아래에서 `path`는 읽을 대상이고 `i`는 그 파일을 읽는 목적입니다.'),
+    p('OMP는 스키마를 모델 API에 맞게 바꿔 전송합니다. 사용자가 [OMP 설정](#/topic/settings-and-resource-discovery)의 `tools.intentTracing`으로 호출 의도 추적을 제어합니다. 기본값은 `true`이며 환경 변수 `PI_INTENT_TRACING`이 있으면 그 값이 우선합니다. 추적이 켜져 있으면 하네스가 도구 스키마에 짧은 설명용 `i` 필드를 추가하고, 모델이 “왜 이 도구를 쓰는지”를 적습니다. 아래에서 `path`는 읽을 대상이고 `i`는 그 파일을 읽는 목적입니다.'),
     code('모델이 만든 read 호출의 인자', 'json', '{"i":"테스트 실행 명령 확인","path":"package.json"}'),
     p('하네스는 이 설명을 호출의 메타데이터로 분리해 실행 이벤트와 추적 기록에 사용합니다. `read`의 실행 함수에는 `path`를 넘기며, `i`가 읽을 대상을 바꾸지는 않습니다. 모델이 쓴 목적이므로 실행 결과를 확인하는 근거와는 구별합니다. 하네스가 추가한 의도는 최대 200자이며, 도구 설정에 따라 생략하거나 인자에서 계산할 수도 있습니다. 도구가 원래 자기 인자로 정의한 `i`는 이 처리의 대상이 아닙니다.'),
     refs('packages/agent/src/types.ts', 'packages/agent/src/agent-loop.ts', 'packages/coding-agent/src/tools/read.ts'),
