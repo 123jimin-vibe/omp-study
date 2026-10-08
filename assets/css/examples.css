@@ -148,11 +148,35 @@ html[data-theme="dark"] .learning-figure {
 .example-controls [aria-pressed="true"] { background: var(--example-input-fill); color: var(--example-input); border-color: var(--example-input); }
 .example-controls button:disabled { opacity: .45; cursor: default; }
 .sequence-status { font-variant-numeric: tabular-nums; min-width: 5rem; text-align: center; font-size: .8rem; }
-.session-tree, .session-tree ul { list-style: none; padding-left: 1rem; }
-.session-tree ul { border-left: 1px solid var(--line); }
-.session-tree-node { display: block; padding: .5rem; border-left: 3px solid transparent; margin: .25rem 0; }
+.session-tree, .session-tree ul { display: flex; justify-content: center; list-style: none; padding: 0; margin: 0; gap: .6rem; }
+.session-tree li { flex: 1; min-width: 0; text-align: center; }
+.session-tree ul { position: relative; padding-top: 1rem; }
+.session-tree ul::before { content: ''; position: absolute; top: 0; left: 50%; height: 1rem; border-left: 1px solid var(--line); }
+.session-tree ul:has(> li + li) { gap: 0; }
+.session-tree ul:has(> li + li) > li { position: relative; padding: 1rem .3rem 0; }
+.session-tree ul:has(> li + li) > li::before { content: ''; position: absolute; top: 0; left: 0; right: 0; border-top: 1px solid var(--line); }
+.session-tree ul:has(> li + li) > li:first-child::before { left: 50%; }
+.session-tree ul:has(> li + li) > li:last-child::before { right: 50%; }
+.session-tree ul:has(> li + li) > li::after { content: ''; position: absolute; top: 0; left: 50%; height: 1rem; border-left: 1px solid var(--line); }
+.session-tree-node { display: block; padding: .5rem; border: 1px solid var(--line); border-left-width: 3px; margin: 0 auto; max-width: 22rem; border-radius: .25rem; font-size: .8rem; }
 .session-tree-node[data-active="true"] { border-color: var(--example-input); background: var(--example-input-fill); }
-.tree-path-result { padding: .25rem 1rem; border: 1px solid var(--line); }
+.session-tree-status { font-size: .8rem; color: var(--example-input); }
+.session-tree-results { margin-top: 1.5rem; }
+.tree-path-result { padding: 1rem; border: 1px solid var(--line); border-radius: .4rem; }
+.tree-path-result h4 { margin: 0; }
+.tree-path-breadcrumb { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); margin: .5rem 0 1rem; }
+.tree-conversation { list-style: none; display: grid; gap: .75rem; padding: 0; margin: 0; }
+.tree-message { padding: .75rem; border: 1px solid var(--line); border-left: 3px solid var(--example-reasoning); background: var(--surface); border-radius: .4rem; min-width: 0; }
+.tree-message[data-role="user"] { margin-left: 1.5rem; border-left-color: var(--example-input); }
+.tree-message[data-role="tool"] { margin-right: 1.5rem; border-left-color: var(--example-output); }
+.tree-message[data-selected="true"] { background: var(--example-input-fill); border-color: var(--example-input); }
+.tree-message-header { display: flex; flex-wrap: wrap; gap: .35rem .6rem; align-items: baseline; font-size: .75rem; }
+.tree-message-role { font-weight: 650; }
+.tree-message-scope { margin-left: auto; color: var(--muted); }
+.tree-message-body { margin: .4rem 0 0; white-space: pre-line; }
+.tree-message-correlation { display: inline-block; margin-top: .5rem; color: var(--example-output); font-size: .75rem; }
+.tree-path-excluded { font-size: .8rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: .8rem; }
+.tree-next-request { text-align: center; color: var(--example-input); font-weight: 650; font-size: .85rem; }
 .budget-bar { display: flex; height: 2rem; position: relative; border: 1px solid var(--line); }
 .budget-segment { min-width: 0; }
 .budget-segment-instructions { background: var(--example-input); }
@@ -171,7 +195,8 @@ html[data-theme="dark"] .learning-figure {
 @media (max-width: 560px) {
   .article-table th, .article-table td { padding: .6rem .35rem; }
   .article-table { font-size: .8125rem; }
-  .session-tree, .session-tree ul { padding-left: .6rem; }
+  .tree-path-result { padding: .75rem; }
+  .tree-message[data-role] { margin-left: 0; margin-right: 0; }
 }
 @media print {
   .example-controls { display: none; }
@@ -181,6 +206,9 @@ html[data-theme="dark"] .learning-figure {
   .article-table th, .article-table td { padding: 5pt; }
   .session-tree-example, .compaction-budget-example { break-inside: auto !important; }
   .tree-path-result, .budget-panel { break-inside: avoid; margin: 10pt 0; }
-  .session-tree-node[data-active="true"] { background: none; border-color: transparent; }
+  .session-tree-saved { break-inside: avoid; }
+  .session-tree-node, .session-tree-node[data-active="true"] { background: none; border-color: #aaa; }
+  .session-tree-status { display: none; }
+  .tree-message { break-inside: avoid; }
   .budget-bar, .budget-swatch { print-color-adjust: exact; }
 }

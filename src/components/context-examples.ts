@@ -20,6 +20,7 @@ export function createSessionTree(data: SessionTreeBlock): MountedView {
     for (const node of data.nodes.filter(node => node.parent === parent)) {
       const item = el('li');
       const label = el('span', 'session-tree-node');
+      label.dataset.role = node.role;
       label.append(el('code', '', node.id), ' ');
       appendInlineText(label, node.text);
       items.set(node.id, label);
@@ -32,6 +33,8 @@ export function createSessionTree(data: SessionTreeBlock): MountedView {
   }
   children(null, tree); saved.append(tree);
   const results = el('div', 'session-tree-results');
+  const status = el('p', 'session-tree-status');
+  status.setAttribute('role', 'status');
   const options = data.branches.map(id => {
     const node = data.nodes.find(node => node.id === id)!;
     const button = el('button', 'button', node.text);
@@ -43,12 +46,23 @@ export function createSessionTree(data: SessionTreeBlock): MountedView {
     result.id = `tree-path-${exampleId}-${id}`;
     button.setAttribute('aria-controls', result.id);
     result.append(el('h4', '', `${data.labels.input} — ${id}`));
-    const list = el('ol');
+    result.append(el('p', 'tree-path-breadcrumb', path.join(' → ')));
+    const list = el('ol', 'tree-conversation');
     for (const itemId of path) {
       const entry = data.nodes.find(n => n.id === itemId)!;
-      list.append(el('li', '', `${entry.id}: ${entry.text}`));
+      const message = el('li', 'tree-message');
+      message.dataset.role = entry.role;
+      message.dataset.selected = String(itemId === id);
+      const header = el('div', 'tree-message-header');
+      header.append(el('span', 'tree-message-role', entry.roleLabel), el('code', '', entry.id), el('span', 'tree-message-scope', itemId === id ? data.labels.selected : data.labels.shared));
+      const body = el('p', 'tree-message-body');
+      appendInlineText(body, entry.message);
+      message.append(header, body);
+      if (entry.correlation) message.append(el('code', 'tree-message-correlation', entry.correlation));
+      list.append(message);
     }
-    result.append(list);
+    const excluded = data.branches.filter(branch => !path.includes(branch)).map(branch => data.nodes.find(node => node.id === branch)!).map(node => `${node.id} · ${node.text}`).join(' / ');
+    result.append(list, el('p', 'tree-path-excluded', `${data.labels.excluded}: ${excluded}`), el('p', 'tree-next-request', data.labels.next));
     button.addEventListener('click', () => select(id), { signal: events.signal });
     controls.append(button); results.append(result);
     return { id, button, path, result };
@@ -60,9 +74,10 @@ export function createSessionTree(data: SessionTreeBlock): MountedView {
       option.result.dataset.active = String(option.id === id);
     }
     for (const [nodeId, item] of items) item.dataset.active = String(selected.path.includes(nodeId));
+    status.textContent = `${data.labels.input}: ${selected.path.join(' → ')}`;
   }
   select(data.branches[0]!);
-  element.append(heading, controls, saved, results);
+  element.append(heading, controls, status, saved, results, el('figcaption', 'learning-figure-caption', data.labels.note));
   return { element, dispose: () => events.abort() };
 }
 

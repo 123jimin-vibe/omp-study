@@ -62,3 +62,12 @@ budgets, and result verification; connect these behaviors to concrete design cho
   and tool definitions, alongside summarized history and retained recent turns.
   Distinguish this policy boundary from inherent inability to compress content,
   and account for the retained prefix in the context-window budget.
+- C22 MUST visualize OAuth renewal and the credential/request paths between
+  remote workers, the broker, the gateway and the LLM provider, and explain
+  which secret values the obfuscation feature detects.
+- C23's branch visualization MUST show the selected history as messages in the
+  next model request, distinguish shared and branch-specific content, and make
+  clear that unselected records remain saved.
+- C24 MUST organize its compression-method explanations in the default attempt
+  order (`remote`, `snapcompact`, `handoff`, `shake`, `soft`) and explain how a
+  handoff document is generated and applied to the session.

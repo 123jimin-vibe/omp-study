@@ -25,9 +25,10 @@ export function createToolSequenceExample(data: ToolSequenceBlock): MountedView 
   const timeline = el('div', 'tool-sequence-timeline');
   const lifelines = el('div', 'tool-sequence-lifelines');
   lifelines.setAttribute('aria-hidden', 'true');
+  const actorGap = 80 / (data.actors.length - 1);
   for (const [index] of data.actors.entries()) {
     const line = el('span', 'tool-sequence-lifeline');
-    line.style.left = `${10 + index * 40}%`;
+    line.style.left = `${10 + index * actorGap}%`;
     lifelines.append(line);
   }
 
@@ -35,8 +36,12 @@ export function createToolSequenceExample(data: ToolSequenceBlock): MountedView 
   events.setAttribute('role', 'list');
   for (const [index, event] of data.events.entries()) {
     const row = el('li', `tool-sequence-event tool-sequence-${event.kind}`);
-    const actorPosition = 10 + event.from * 40;
-    const eventWidth = Math.abs(event.to - event.from) * 40;
+    const actorPosition = 10 + event.from * actorGap;
+    const eventWidth = Math.abs(event.to - event.from) * actorGap;
+    const messageWidth = Math.max(40, eventWidth);
+    const midpoint = 10 + (event.from + event.to) / 2 * actorGap;
+    row.style.setProperty('--sequence-message-width', `${messageWidth}%`);
+    row.style.setProperty('--sequence-message-start', `${Math.max(0, Math.min(100 - messageWidth, midpoint - messageWidth / 2))}%`);
     if (event.from === event.to) {
       const selfEventWidth = 40;
       const selfEventStart = Math.max(0, Math.min(100 - selfEventWidth, actorPosition - selfEventWidth / 2));
@@ -45,7 +50,7 @@ export function createToolSequenceExample(data: ToolSequenceBlock): MountedView 
       row.style.setProperty('--sequence-width', `${selfEventWidth}%`);
       row.style.setProperty('--sequence-anchor', `${actorPosition}%`);
     } else {
-      row.style.setProperty('--sequence-start', `${10 + Math.min(event.from, event.to) * 40}%`);
+      row.style.setProperty('--sequence-start', `${10 + Math.min(event.from, event.to) * actorGap}%`);
       row.style.setProperty('--sequence-width', `${eventWidth}%`);
       if (event.to < event.from) row.classList.add('tool-sequence-leftward');
     }
@@ -58,9 +63,9 @@ export function createToolSequenceExample(data: ToolSequenceBlock): MountedView 
     appendInlineText(title, event.label);
 
     const route = el('p', 'tool-sequence-route');
-    appendInlineText(route, data.actors[event.from]);
+    appendInlineText(route, data.actors[event.from]!);
     route.append(' → ');
-    appendInlineText(route, data.actors[event.to]);
+    appendInlineText(route, data.actors[event.to]!);
 
     const detail = el('p', 'tool-sequence-detail');
     appendInlineText(detail, event.detail);

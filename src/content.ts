@@ -129,10 +129,10 @@ export interface ToolSequenceBlock {
   title: string;
   prompt: string;
   controls?: { previous: string; next: string; all: string; step: string };
-  actors: readonly [string, string, string];
+  actors: readonly [string, string, string] | readonly [string, string, string, string];
   events: readonly {
-    from: 0 | 1 | 2;
-    to: 0 | 1 | 2;
+    from: 0 | 1 | 2 | 3;
+    to: 0 | 1 | 2 | 3;
     label: string;
     detail: string;
     kind: 'request' | 'call' | 'read' | 'result' | 'answer' | 'process' | 'event';
@@ -158,8 +158,8 @@ export interface ExecutionPathBlock {
 
 export interface SessionTreeBlock {
   kind: 'session-tree'; title: string;
-  labels: { choose: string; input: string; saved: string; print: string };
-  nodes: readonly { id: string; parent: string | null; text: string }[];
+  labels: { choose: string; input: string; saved: string; print: string; shared: string; selected: string; excluded: string; note: string; next: string };
+  nodes: readonly { id: string; parent: string | null; text: string; role: 'user' | 'assistant' | 'tool'; roleLabel: string; message: string; correlation?: string }[];
   branches: readonly string[];
 }
 export interface CompactionBudgetBlock {
