@@ -3,6 +3,7 @@ import { el, icon } from './components/dom.ts';
 import { createReadingTools } from './components/reading-tools.ts';
 import { createThemeToggle } from './components/theme-toggle.ts';
 import { createAmbient } from './components/ambient.ts';
+import { configureInlineText } from './components/inline-text.ts';
 import { loadLocale } from './i18n.ts';
 import { renderTitle } from './views/title.ts';
 import { renderTopic } from './views/topic.ts';
@@ -15,6 +16,7 @@ type Route = { href: string; section: string | null } & (
 let activeTransition: ViewTransition | null = null;
 
 const locale = await loadLocale(new URL(window.location.href).searchParams.get('lang'));
+configureInlineText(locale.article.inlineTokens);
 document.documentElement.lang = locale.code;
 const host = document.getElementById('site');
 if (!host) throw new Error('Missing site root');

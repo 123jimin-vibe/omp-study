@@ -42,7 +42,7 @@ const catalogue: readonly TopicGroup[] = [
             blocks: [
               {
                 kind: 'paragraph',
-                text: '대규모 언어 모델(large language model, LLM)은 많은 텍스트에서 배운 패턴을 바탕으로, 주어진 입력에 이어질 텍스트를 생성하는 모델입니다. 질문에 답하고, 문서를 요약하고, 코드를 작성하는 데 쓸 수 있습니다.',
+                text: '**대규모 언어 모델**(large language model, LLM)은 많은 텍스트에서 배운 패턴을 바탕으로, 주어진 입력에 이어질 텍스트를 생성하는 모델입니다. 질문에 답하고, 문서를 요약하고, 코드를 작성하는 데 쓸 수 있습니다.',
               },
               {
                 kind: 'paragraph',
@@ -73,7 +73,7 @@ const catalogue: readonly TopicGroup[] = [
             blocks: [
               {
                 kind: 'paragraph',
-                text: '모델은 텍스트를 토큰(token)이라는 단위로 나누어 처리합니다. 토큰은 단어 전체일 수도, 단어의 일부나 문장 부호일 수도 있습니다. 한 글자나 한 단어가 항상 한 토큰인 것은 아닙니다. 같은 문장도 모델의 토크나이저와 언어에 따라 토큰 수가 달라집니다.',
+                text: '모델은 텍스트를 **토큰**(token)이라는 단위로 나누어 처리합니다. 토큰은 단어 전체일 수도, 단어의 일부나 문장 부호일 수도 있습니다. 한 글자나 한 단어가 항상 한 토큰인 것은 아닙니다. 같은 문장도 모델의 토크나이저와 언어에 따라 토큰 수가 달라집니다.',
               },
               tokenizationExample,
               {
@@ -95,11 +95,11 @@ const catalogue: readonly TopicGroup[] = [
             blocks: [
               {
                 kind: 'paragraph',
-                text: '컨텍스트 창(context window)은 한 번의 요청에서 모델이 다룰 수 있는 토큰의 범위입니다. 입력과 출력을 합쳐 제한하는 모델에서는 입력이 길수록 생성에 쓸 수 있는 공간이 줄어듭니다. 최대 출력 길이는 이와 별도로 정해진 생성량의 상한입니다.',
+                text: '**컨텍스트 창**(context window)은 한 번의 요청에서 모델이 다룰 수 있는 토큰의 범위입니다. 입력과 출력을 합쳐 제한하는 모델에서는 입력이 길수록 생성에 쓸 수 있는 공간이 줄어듭니다. **최대 출력 길이**는 이와 별도로 정해진 생성량의 상한입니다.',
               },
               {
                 kind: 'paragraph',
-                text: '추론 모델은 답변을 만드는 과정에서 내부 추론 토큰도 생성합니다. OpenAI의 추론 모델에서는 이 토큰이 컨텍스트 공간을 차지하며, 사용자에게 보이는 답변과 함께 출력 사용량에 포함됩니다. 따라서 화면에 나타난 답변이 짧더라도 출력 토큰을 많이 쓸 수 있습니다.',
+                text: '**추론 모델**은 답변을 만드는 과정에서 내부 추론 토큰도 생성합니다. OpenAI의 추론 모델에서는 이 토큰이 컨텍스트 공간을 차지하며, 사용자에게 보이는 답변과 함께 출력 사용량에 포함됩니다. 따라서 화면에 나타난 답변이 짧더라도 출력 토큰을 많이 쓸 수 있습니다.',
               },
               contextWindowExample,
               {
@@ -117,7 +117,7 @@ const catalogue: readonly TopicGroup[] = [
             blocks: [
               {
                 kind: 'paragraph',
-                text: '코딩 에이전트는 여러 번 모델을 호출하면서 같은 지침, 도구 정의, 이전 대화를 되풀이해 보냅니다. 프롬프트 캐싱(prompt caching)은 입력의 앞부분이 토큰 단위로 정확히 일치할 때, 그 부분을 처리한 계산을 재사용하는 기능입니다. 이전 답변을 꺼내 주는 응답 캐시가 아니므로, 캐시에 적중해도 답변은 새로 생성됩니다.',
+                text: '코딩 에이전트는 여러 번 모델을 호출하면서 같은 지침, 도구 정의, 이전 대화를 되풀이해 보냅니다. **프롬프트 캐싱**(prompt caching)은 입력의 앞부분이 토큰 단위로 정확히 일치할 때, 그 부분을 처리한 계산을 재사용하는 기능입니다. 이전 답변을 꺼내 주는 응답 캐시가 아니므로, 캐시에 적중해도 답변은 새로 생성됩니다.',
               },
               {
                 kind: 'paragraph',
@@ -256,6 +256,7 @@ export const topicGroups: readonly TopicGroup[] = catalogue.map(group => ({ ...g
 export const topics: readonly Topic[] = topicGroups.flatMap(group => group.topics);
 
 export const article: ArticleLabels = {
+  inlineTokens: { setting: '설정', value: '값', command: '명령' },
   back: '목차',
   onThisPage: '이 페이지에서',
   sectionNavigation: '섹션 탐색',

@@ -208,6 +208,35 @@
   text-underline-offset: 0.2em;
 }
 
+.article-definition { font-style: normal; }
+.article-definition strong { font-weight: 750; }
+.topic-page .article-token {
+  display: inline-block;
+  max-width: 100%;
+  line-height: 1.5;
+  padding: .08em .3em;
+  border: 1px solid currentColor;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.article-token::before {
+  content: attr(data-label);
+  font-family: var(--font-sans);
+  font-size: .68em;
+  font-weight: 600;
+  margin-right: .45em;
+  user-select: none;
+}
+.topic-page .article-token[data-kind="setting"] { color: #285ac0; border-style: dotted; }
+.topic-page .article-token[data-kind="value"] { color: #16705c; border-radius: .7em; }
+.topic-page .article-token[data-kind="command"] { color: #8051ae; border-radius: .1em; border-bottom-width: 2px; }
+html[data-theme="dark"] .topic-page .article-token[data-kind="setting"] { color: #a2bcff; }
+html[data-theme="dark"] .topic-page .article-token[data-kind="value"] { color: #86d7bc; }
+html[data-theme="dark"] .topic-page .article-token[data-kind="command"] { color: #d0a9ed; }
+@media print {
+  .topic-page .article-token[data-kind], html[data-theme="dark"] .topic-page .article-token[data-kind] { color: #222; background: transparent; }
+}
+
 .topic-page .article-references {
   margin: 1.25rem 0 0;
   padding-left: 1.25rem;

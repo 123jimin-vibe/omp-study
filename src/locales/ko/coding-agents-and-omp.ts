@@ -2,7 +2,7 @@ import { topic, section, p, code, table, refs, related } from './chapter-blocks.
 
 export const codingAgentsAndOmpTopic = topic('coding-agents-and-omp', '코딩 에이전트와 OMP', '모델과 도구를 번갈아 호출하며 코드를 읽고 고치는 프로그램.',
   section('a-coding-task', '읽고 고치고 확인하는 작업',
-    p("코딩 에이전트는 모델이 요청한 도구를 실행하고, 그 결과를 모델에게 다시 보내며 작업을 이어 갑니다. OMP는 여기에 모델 연결, 대화 저장, 화면 표시까지 갖춘 프로그램입니다."),
+    p("**코딩 에이전트**는 모델이 요청한 도구를 실행하고, 그 결과를 모델에게 다시 보내며 작업을 이어 갑니다. OMP는 여기에 모델 연결, 대화 저장, 화면 표시까지 갖춘 프로그램입니다."),
     p('첫 장의 평균 함수 A를 다시 봅시다. `filter(Boolean)`이 0점을 제거해 `[0, 100]`의 평균을 `100`으로 계산합니다. 프로젝트의 `check-average.ts`는 `[0, 100] → 50`, `[80, 100] → 90`을 검사하고, 둘 다 맞으면 종료 코드 `0`으로 끝납니다.'),
     code('수정 전 average.ts', 'typescript', 'export const average = (scores: number[]) => {\n  const valid = scores.filter(Boolean);\n  return valid.reduce((sum, value) => sum + value, 0) / valid.length;\n};'),
     {

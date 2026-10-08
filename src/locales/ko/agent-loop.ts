@@ -2,7 +2,7 @@ import { topic, section, p, code, table, paths, sequence, refs, related } from '
 
 export const agentLoopTopic = topic('agent-loop', '에이전트 루프', '모델에게 도구 결과를 보내고 다음 응답을 받는 과정을 반복하는 코드.',
   section('round-trip', '도구를 실행한 뒤 다시 요청하기',
-    p("앞 장에서 파일을 읽은 다음에는 어떤 일이 일어날까요? 모델이 `edit` 호출을 보내면 루프가 인자를 검사하고 도구를 실행합니다. 편집 결과를 받은 모델은 검사를 실행할지 판단합니다."),
+    p("**에이전트 루프**는 모델에 요청하고, 응답에 들어 있는 도구 호출을 실행한 뒤, 그 결과를 다음 모델 요청에 넣는 반복 과정입니다. 앞 장에서 파일을 읽은 다음에는 어떤 일이 일어날까요? 모델이 `edit` 호출을 보내면 루프가 인자를 검사하고 도구를 실행합니다. 편집 결과를 받은 모델은 검사를 실행할지 판단합니다."),
     sequence('편집 결과를 다음 요청에 넣기', '`average.ts`에서 0점도 평균에 포함되게 고치고 `check-average.ts`로 확인해 줘.', ['모델', '에이전트 루프', 'edit 구현'], [
       { from: 1, to: 0, kind: 'request', label: '두 번째 모델 요청', detail: '사용자 요청, read 호출, average.ts의 내용' },
       { from: 0, to: 1, kind: 'call', label: 'edit 호출', detail: '0점 필터를 제거하는 편집 인자 생성' },
@@ -21,7 +21,7 @@ export const agentLoopTopic = topic('agent-loop', '에이전트 루프', '모델
       { label: '필드 누락', stages: [['인자 검사', '필수 필드가 없어 오류입니다.', 'blocked'], ['파일 변경', 'execute를 호출하지 않습니다.', 'skipped']], result: 'isError 결과를 보고 모델이 인자를 고칩니다.' },
       { label: '파일 변경됨', stages: [['인자 검사', '형식은 올바릅니다.', 'complete'], ['파일 변경', '읽었던 내용과 현재 파일이 달라 적용할 위치를 확인할 수 없습니다.', 'blocked']], result: '모델이 파일을 다시 읽은 뒤 새 편집을 만듭니다.' },
     ]),
-    p("호출 인자는 `toolcall_start`·`toolcall_delta`·`toolcall_end` 이벤트로 조금씩 도착합니다. 도구는 `openArgStream`으로 생성 중인 인자를 받아볼 수 있습니다. `task.speculativeLaunch`를 켜면 일부 하위 에이전트 작업은 인자가 모두 도착하기 전에 시작할 수도 있습니다."),
+    p("호출 인자는 `toolcall_start`·`toolcall_delta`·`toolcall_end` 이벤트로 조금씩 도착합니다. 도구는 `openArgStream`으로 생성 중인 인자를 받아볼 수 있습니다. `task.speculativeLaunch`{setting}를 켜면 일부 하위 에이전트 작업은 인자가 모두 도착하기 전에 시작할 수도 있습니다."),
     p("일반 도구는 인자가 스키마에 맞는지 확인한 뒤 실행합니다. `lenientArgValidation`을 쓰는 도구는 이 검사에 실패해도 받은 인자를 그대로 처리할 수 있습니다. 실행 중 예외가 발생하거나 `isError` 결과가 돌아오면, 루프는 오류 내용을 다음 모델 요청에 넣습니다."),
     refs('packages/agent/src/agent-loop.ts', 'packages/coding-agent/src/task/settings.ts'),
   ),

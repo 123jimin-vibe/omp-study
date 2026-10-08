@@ -165,8 +165,9 @@ export interface SessionTreeBlock {
 export interface CompactionBudgetBlock {
   kind: 'compaction-budget'; title: string; capacity: number; threshold: number;
   labels: { before: string; after: string; free: string; tokens: string; choose: string; note: string };
-  before: readonly { label: string; tokens: number }[];
-  after: readonly { label: string; tokens: number }[];
+  retainedPrefix: readonly { kind: 'instructions' | 'tools'; label: string; tokens: number }[];
+  before: readonly { kind: 'history' | 'recent'; label: string; tokens: number }[];
+  after: readonly { kind: 'summary' | 'recent'; label: string; tokens: number }[];
 }
 
 export type ContentBlock = ParagraphBlock | SubheadingBlock | NoteBlock | CodeBlock | DemoBlock | ReferencesBlock | TableBlock | TaskTranscriptBlock | SessionCompositionBlock
@@ -198,6 +199,7 @@ export interface TopicGroup {
 }
 
 export interface ArticleLabels {
+  inlineTokens: Readonly<Record<'setting' | 'value' | 'command', string>>;
   back: string;
   onThisPage: string;
   sectionNavigation: string;

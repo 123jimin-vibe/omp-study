@@ -75,7 +75,8 @@ export function createCompactionBudget(data: CompactionBudgetBlock): MountedView
   const controls = el('div', 'example-controls');
   controls.setAttribute('role', 'group'); controls.setAttribute('aria-label', data.labels.choose);
   const format = (n: number) => n.toLocaleString(document.documentElement.lang);
-  const panels = [data.before, data.after].map((segments, index) => {
+  const panels = [data.before, data.after].map((history, index) => {
+    const segments = [...data.retainedPrefix, ...history];
     const name = index === 0 ? data.labels.before : data.labels.after;
     const button = el('button', 'button', name); button.type = 'button';
     const panel = el('section', 'budget-panel'); panel.id = `budget-${exampleId}-${index}`;
@@ -84,10 +85,10 @@ export function createCompactionBudget(data: CompactionBudgetBlock): MountedView
     panel.append(el('h4', '', `${name}: ${format(used)} / ${format(data.capacity)} ${data.labels.tokens}`));
     const bar = el('div', 'budget-bar'); bar.setAttribute('aria-hidden', 'true');
     const legend = el('ul', 'budget-legend');
-    for (const [i, segment] of [...segments, { label: data.labels.free, tokens: data.capacity - used }].entries()) {
-      const slice = el('span', `budget-segment budget-segment-${i}`);
+    for (const segment of [...segments, { kind: 'free', label: data.labels.free, tokens: data.capacity - used }]) {
+      const slice = el('span', `budget-segment budget-segment-${segment.kind}`);
       slice.style.width = `${segment.tokens / data.capacity * 100}%`; bar.append(slice);
-      const item = el('li'); const swatch = el('span', `budget-swatch budget-segment-${i}`);
+      const item = el('li'); const swatch = el('span', `budget-swatch budget-segment-${segment.kind}`);
       swatch.setAttribute('aria-hidden', 'true'); item.append(swatch, `${segment.label}: ${format(segment.tokens)} ${data.labels.tokens}`); legend.append(item);
     }
     const threshold = el('span', 'budget-threshold'); threshold.style.left = `${data.threshold / data.capacity * 100}%`; bar.append(threshold);

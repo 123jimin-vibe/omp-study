@@ -155,9 +155,12 @@ html[data-theme="dark"] .learning-figure {
 .tree-path-result { padding: .25rem 1rem; border: 1px solid var(--line); }
 .budget-bar { display: flex; height: 2rem; position: relative; border: 1px solid var(--line); }
 .budget-segment { min-width: 0; }
-.budget-segment-0 { background: var(--example-input); }
-.budget-segment-1 { background: var(--example-output); }
-.budget-segment-2 { background: var(--example-reasoning-fill); }
+.budget-segment-instructions { background: var(--example-input); }
+.budget-segment-tools { background: repeating-linear-gradient(45deg, var(--example-input) 0 2px, var(--example-input-fill) 2px 4px); }
+.budget-segment-history { background: var(--example-reasoning); }
+.budget-segment-summary { background: repeating-linear-gradient(90deg, var(--example-reasoning) 0 2px, var(--example-reasoning-fill) 2px 4px); }
+.budget-segment-recent { background: var(--example-output); }
+.budget-segment-free { background: var(--surface); }
 .budget-threshold { position: absolute; top: -.35rem; bottom: -.35rem; border-left: 2px dashed var(--ink); }
 .budget-legend { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1rem; font-size: .8rem; }
 .budget-swatch { display: inline-block; width: .75rem; height: .75rem; border: 1px solid var(--line); margin-right: .35rem; }

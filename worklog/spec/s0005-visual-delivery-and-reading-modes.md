@@ -78,6 +78,14 @@ title = "Visual Delivery and Reading Modes"
 
 - Code blocks MUST support syntax highlighting while preserving their source text for reading, copying, and printing.
 - API field paths, identifiers, and code expressions within article prose and example explanations MUST use semantic inline code, remaining readable in narrow layouts and print.
+- Defining occurrences of harness-engineering terms MUST use semantic bold
+  emphasis, once per term across the authored articles rather than once per page
+  load. Repeated mentions and navigation titles do not gain definition emphasis.
+- Setting keys, setting values and OMP commands MUST have clear, consistent
+  visual distinctions in instructional text. The distinction MUST remain
+  understandable without color and readable in mobile, dark and print modes.
+  Annotate the actual role in context; do not infer it from an identifier's shape
+  at render time or alter copied executable code with presentation labels.
 
 ## Color modes
 

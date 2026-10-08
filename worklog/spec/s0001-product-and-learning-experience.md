@@ -51,3 +51,14 @@ budgets, and result verification; connect these behaviors to concrete design cho
   mechanisms are used. In particular, introduce Eval and internal URLs with links
   from the chapters that use their objects or address schemes. Connections should
   explain relevance rather than form an unrelated list of further reading.
+- Define harness-engineering terms at their explanatory introduction and mark
+  that definition in bold exactly once per term across the site's articles.
+  This typography requirement applies to all chapters, including reviewed ones.
+- Audit chapters 19 onward for concepts introduced without their purpose,
+  input, actor or practical consequence; a bare name or cross-link is not an
+  explanation of a new mechanism.
+- The compaction lesson MUST explain and visualize which request content stays
+  outside ordinary history summarization, including system/project instructions
+  and tool definitions, alongside summarized history and retained recent turns.
+  Distinguish this policy boundary from inherent inability to compress content,
+  and account for the retained prefix in the context-window budget.

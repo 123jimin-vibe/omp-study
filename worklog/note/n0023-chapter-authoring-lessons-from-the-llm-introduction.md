@@ -99,6 +99,16 @@ from project-shared files. A section may need these clarifications even when its
 opening definition is correct. Audit the entire lesson, not the number of new
 paragraphs or successful checks.
 
+t0034 exposed a further gap: a mode's effect and actor are insufficient when its
+selection mechanism is unstated. At first use, locate every selectable behavior
+in a concrete surface: the full configuration key and file, the named tool or
+method's argument, a user command, or an automatic trigger. For example,
+`python.kernelMode` belongs to OMP configuration; `reset` belongs to an `eval`
+call. Provide the command or file example that makes a representative choice
+actionable. Use full keys such as `compaction.asyncEnabled`, and distinguish
+`config.yml`, model definitions, rule metadata and runtime arguments. Do not
+replace the missing scope with another unexplained term or a bare chapter link.
+
 **[INFERENCE] The recurring gap was instructional judgment, not merely missing
 facts or components.** Early versions contained relevant terminology and passed
 engineering checks, but some sentences answered questions the reader had not
@@ -121,6 +131,15 @@ Passing the first does not answer the second. Review both before handing off a
 chapter; do not rely on the user to perform the first relevance pass.
 
 ## Guidance for the next chapter author
+
+t0035 adds a further audit question: **what object is this example showing, and
+who sends it to whom?** A bare schema rewrite is unintelligible without the tool
+definition and enclosing request field. Define roles individually rather than
+listing their names; show credential issuance and renewal before summarizing
+types in a table. Separate provider-level reasoning controls from the harness's
+selection UI, and general mechanisms from OMP's concrete roles and settings.
+Cross-links do not replace a mechanism: TTSR needs an actual rule, trigger,
+interruption/reminder path and resulting next request in the linked lesson.
 
 ### Establish scope and the harness connection
 
@@ -203,6 +222,14 @@ than adding a caption that claims it is useful.
   `src/components/article.ts`.
 - Use the existing inline-text renderer in `src/components/inline-text.ts` for
   backtick-delimited code spans and `[label](#/topic/route-id)` chapter links.
+  Mark an actual term definition with `**term**` exactly once across the authored
+  site; do not emphasize the first mention in every chapter or suppress terms
+  according to browsing history. Search the catalogue before adding a definition.
+  Annotate a setting key with `` `key`{setting} ``, its selectable value with
+  `` `value`{value} ``, and a user-facing OMP command with `` `/command`{command} ``.
+  Keep method calls, protocol fields and file paths as ordinary code spans.
+  These annotations belong in prose and tables, never in runnable code blocks.
+  The labels are localized; rendering must preserve literal executable text.
   Preserve literal text safely; do not introduce
   HTML-bearing prose or break code-block copying to style identifiers.
 - Preserve separate category/chapter numbering, catalogue order, shared
