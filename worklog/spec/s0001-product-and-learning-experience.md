@@ -71,3 +71,11 @@ budgets, and result verification; connect these behaviors to concrete design cho
 - C24 MUST organize its compression-method explanations in the default attempt
   order (`remote`, `snapcompact`, `handoff`, `shake`, `soft`) and explain how a
   handoff document is generated and applied to the session.
+- C33 MUST distinguish workspace isolation, agent lifecycle and communication,
+  explain how peer messages enter model context, and illustrate delivery state.
+- C34 MUST explain the concrete mode, client and interruption conditions behind
+  advisor delivery and automatic continuation.
+- C37 MUST summarize model/harness metrics with interpretation boundaries and
+  provide a concrete, reproducible comparison design.
+- C38 MUST explain RoboOMP's purpose, separate OMP runtime and LLM calls,
+  service control and observability, and prompt/model configuration surfaces.

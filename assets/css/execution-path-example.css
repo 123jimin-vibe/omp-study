@@ -176,11 +176,12 @@ html[data-theme="dark"] .execution-path-example {
     display: block;
     visibility: visible;
     margin-block: 12pt;
-    break-inside: auto;
+    break-inside: avoid;
   }
   html .execution-path-case {
     display: block;
     margin: 0 0 6pt;
+    break-after: avoid;
     font-size: 10pt;
   }
   html .execution-path-stage { break-inside: avoid; padding-block: 6pt; }
